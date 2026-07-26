@@ -1,6 +1,6 @@
 /**
  * ANICHA — 5-Stage Impermanence & Multi-Video Morphing Engine
- * Full Section Snap & 5 Environment Web Audio Synthesizer
+ * Full Section Snap, i18n Language Switcher & Web Audio Synthesizer
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,15 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressTrack = document.getElementById('progress-track');
   const currentSecEl = document.getElementById('current-section');
   
-  const morphBadge = document.getElementById('morph-percentage');
-  const blendBtns = document.querySelectorAll('.blend-btn');
   const soundToggleBtn = document.getElementById('sound-toggle');
+  const langToggleBtn = document.getElementById('lang-toggle');
 
   // State
   let blendMode = 'crossfade';
   let activeSectionIndex = 0;
-  let isSectionAnimating = false;
-  let lastGestureTime = 0;
+  let isTransitioning = false;
+  let currentLang = 'EN';
   let audioCtx = null;
   let isAudioPlaying = false;
   let osc1 = null;
@@ -90,23 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
     videoElements.forEach((vid, idx) => {
       const dist = Math.abs(exactIndex - idx);
       const op = Math.max(0, 1 - dist);
-
-      if (blendMode === 'additive') {
-        vid.style.mixBlendMode = 'lighter';
-        vid.style.opacity = op > 0 ? '1' : '0';
-      } else if (blendMode === 'difference') {
-        vid.style.mixBlendMode = 'difference';
-        vid.style.opacity = op.toFixed(3);
-      } else {
-        // Default smooth crossfade dissolve
-        vid.style.mixBlendMode = 'normal';
-        vid.style.opacity = op.toFixed(3);
-      }
+      vid.style.mixBlendMode = 'normal';
+      vid.style.opacity = op.toFixed(3);
     });
-
-    if (morphBadge) {
-      morphBadge.textContent = `STAGE 0${Math.min(5, Math.floor(exactIndex) + 1)} / 05`;
-    }
 
     requestAnimationFrame(renderMorph);
   }
@@ -114,10 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
   requestAnimationFrame(renderMorph);
 
   // ==========================================================================
-  // Section Navigation Engine (4 Horizontal + 1 Vertical Downward)
+  // Section Navigation Engine
   // ==========================================================================
-
-  let isTransitioning = false;
 
   function goToSection(index) {
     const targetIdx = Math.max(0, Math.min(4, index));
@@ -131,75 +114,54 @@ document.addEventListener('DOMContentLoaded', () => {
     forcePlayAll();
 
     if (targetIdx <= 3) {
-      // Scroll window back to top if scrolled down
-      if (window.scrollY > 0) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       container.scrollTo({ left: targetIdx * window.innerWidth, behavior: 'smooth' });
     } else {
-      // Section 5 (Stillness): Position container at Screen 4 (Purpose) & scroll down
       container.scrollTo({ left: 3 * window.innerWidth, behavior: 'smooth' });
       const stillnessEl = document.getElementById('section-stillness');
       if (stillnessEl) {
         stillnessEl.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  }
 
-  // HARD SCROLL LOCK: Prevent window vertical scroll on Screens 01, 02, and 03
-  window.addEventListener('scroll', () => {
-    if (activeSectionIndex < 3 && window.scrollY > 0) {
-      window.scrollTo(0, 0);
-    }
-  });
+    updateScrollUI();
+  }
 
   // Intercept Mouse Wheel / Trackpad Scroll Gesture
   window.addEventListener('wheel', (e) => {
-    // If activeSectionIndex === 4 (Section 5 Stillness) and scrolled down (scrollY > 40), allow natural vertical scroll
-    if (activeSectionIndex === 4 && window.scrollY > 40 && e.deltaY > 0) {
-      return;
-    }
-
-    // If in Section 5 and scrolling UP near section top (0 < scrollY <= 40), return smoothly to Screen 4 (Purpose)
-    if (activeSectionIndex === 4 && window.scrollY > 0 && window.scrollY <= 40 && e.deltaY < 0) {
-      e.preventDefault();
-      if (!isTransitioning) {
-        isTransitioning = true;
-        goToSection(3);
-        setTimeout(() => { isTransitioning = false; }, 600);
-      }
-      return;
-    }
-
-    // If on horizontal statement screens (activeSectionIndex <= 3)
-    if (activeSectionIndex <= 3 || window.scrollY <= 10) {
-      e.preventDefault();
-
-      const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-
-      if (Math.abs(delta) > 5) {
+    // If inside Section 5 (window.scrollY > 40)
+    if (window.scrollY > 40) {
+      if (window.scrollY <= 80 && e.deltaY < 0) {
+        e.preventDefault();
         if (!isTransitioning) {
           isTransitioning = true;
-
-          if (delta > 0) {
-            // Scrolling DOWN / RIGHT
-            if (activeSectionIndex < 3) {
-              // Advance horizontally across Screens 1 -> 2 -> 3 -> 4
-              goToSection(activeSectionIndex + 1);
-            } else if (activeSectionIndex === 3) {
-              // ONLY from Screen 4 (Purpose) can you scroll DOWN into Section 5 (Stillness)!
-              goToSection(4);
-            }
-          } else if (delta < 0) {
-            // Scrolling UP / LEFT
-            if (activeSectionIndex > 0 && activeSectionIndex <= 3) {
-              goToSection(activeSectionIndex - 1);
-            }
-          }
-
-          setTimeout(() => { isTransitioning = false; }, 600);
+          goToSection(3);
+          setTimeout(() => { isTransitioning = false; }, 500);
         }
       }
+      return; // Allow natural scrolling inside Section 5
+    }
+
+    // On horizontal statement screens (window.scrollY <= 40)
+    e.preventDefault();
+    const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+
+    if (Math.abs(delta) > 5 && !isTransitioning) {
+      isTransitioning = true;
+
+      if (delta > 0) {
+        if (activeSectionIndex < 3) {
+          goToSection(activeSectionIndex + 1);
+        } else if (activeSectionIndex === 3) {
+          goToSection(4);
+        }
+      } else if (delta < 0) {
+        if (activeSectionIndex > 0 && activeSectionIndex <= 3) {
+          goToSection(activeSectionIndex - 1);
+        }
+      }
+
+      setTimeout(() => { isTransitioning = false; }, 500);
     }
   }, { passive: false });
 
@@ -219,28 +181,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const diffY = touchStartY - touchEndY;
     
     if (Math.abs(diffY) > 35) {
-      if (diffY < 0 && window.scrollY <= 40 && activeSectionIndex === 4) {
+      if (diffY < 0 && window.scrollY <= 80 && activeSectionIndex === 4) {
         isTransitioning = true;
         goToSection(3);
-        setTimeout(() => { isTransitioning = false; }, 600);
-      } else if (window.scrollY <= 10) {
+        setTimeout(() => { isTransitioning = false; }, 500);
+      } else if (window.scrollY <= 40) {
         if (diffY > 0) {
-          // Swiping UP / Scrolling DOWN
           if (activeSectionIndex < 3) {
             isTransitioning = true;
             goToSection(activeSectionIndex + 1);
-            setTimeout(() => { isTransitioning = false; }, 600);
+            setTimeout(() => { isTransitioning = false; }, 500);
           } else if (activeSectionIndex === 3) {
-            // ONLY from Screen 4 (Purpose) can you scroll DOWN into Section 5!
             isTransitioning = true;
             goToSection(4);
-            setTimeout(() => { isTransitioning = false; }, 600);
+            setTimeout(() => { isTransitioning = false; }, 500);
           }
         } else if (diffY < 0 && activeSectionIndex > 0) {
-          // Swiping DOWN / Scrolling UP
           isTransitioning = true;
           goToSection(activeSectionIndex - 1);
-          setTimeout(() => { isTransitioning = false; }, 600);
+          setTimeout(() => { isTransitioning = false; }, 500);
         }
       }
     }
@@ -249,18 +208,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update UI on Scroll
   function updateScrollUI() {
     let sectionIndex = 0;
-    if (window.scrollY > window.innerHeight * 0.35) {
+    if (window.scrollY > window.innerHeight * 0.3) {
       sectionIndex = 4;
     } else {
       sectionIndex = Math.min(3, Math.floor((container.scrollLeft + window.innerWidth / 2) / window.innerWidth));
     }
     
     activeSectionIndex = sectionIndex;
-    currentSecEl.textContent = `0${sectionIndex + 1}`;
+    if (currentSecEl) currentSecEl.textContent = `0${sectionIndex + 1}`;
 
     const progressPercent = (sectionIndex / 4) * 100;
-    progressFill.style.width = `${progressPercent}%`;
-    progressThumb.style.left = `${progressPercent}%`;
+    if (progressFill) progressFill.style.width = `${progressPercent}%`;
+    if (progressThumb) progressThumb.style.left = `${progressPercent}%`;
 
     navBtns.forEach((btn, idx) => {
       btn.classList.toggle('active', idx === sectionIndex);
@@ -280,16 +239,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Progress Bar Click Navigation
-  progressTrack.addEventListener('click', (e) => {
-    const rect = progressTrack.getBoundingClientRect();
-    const clickRatio = (e.clientX - rect.left) / rect.width;
-    const targetIdx = Math.round(clickRatio * 4);
-    goToSection(targetIdx);
-  });
+  if (progressTrack) {
+    progressTrack.addEventListener('click', (e) => {
+      const rect = progressTrack.getBoundingClientRect();
+      const clickRatio = (e.clientX - rect.left) / rect.width;
+      const targetIdx = Math.round(clickRatio * 4);
+      goToSection(targetIdx);
+    });
+  }
 
   // Keyboard Arrow Navigation
   window.addEventListener('keydown', (e) => {
-    if (isSectionAnimating) return;
+    if (isTransitioning) return;
 
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
       e.preventDefault();
@@ -298,15 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       goToSection(activeSectionIndex - 1);
     }
-  });
-
-  // Blend Mode Selector
-  blendBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      blendBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      blendMode = btn.dataset.blend;
-    });
   });
 
   // ==========================================================================
@@ -397,8 +349,11 @@ document.addEventListener('DOMContentLoaded', () => {
       osc2.start(now);
 
       isAudioPlaying = true;
-      soundToggleBtn.querySelector('.sound-icon').textContent = '🔊';
-      soundToggleBtn.querySelector('.sound-label').textContent = 'SOUND ON';
+      if (soundToggleBtn) {
+        soundToggleBtn.querySelector('.sound-icon').textContent = '🔊';
+        const label = soundToggleBtn.querySelector('.sound-label');
+        if (label) label.textContent = currentLang === 'EN' ? 'SOUND ON' : 'DŹWIĘK WŁ.';
+      }
     } else {
       if (masterGain && audioCtx) {
         masterGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8);
@@ -408,23 +363,27 @@ document.addEventListener('DOMContentLoaded', () => {
           isAudioPlaying = false;
         }, 800);
       }
-      soundToggleBtn.querySelector('.sound-icon').textContent = '🔈';
-      soundToggleBtn.querySelector('.sound-label').textContent = 'AMBIENT SOUND';
+      if (soundToggleBtn) {
+        soundToggleBtn.querySelector('.sound-icon').textContent = '🔈';
+        const label = soundToggleBtn.querySelector('.sound-label');
+        if (label) label.textContent = currentLang === 'EN' ? 'AMBIENT SOUND' : 'DŹWIĘK OTOCZENIA';
+      }
     }
   }
 
-  soundToggleBtn.addEventListener('click', toggleAudio);
+  if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', toggleAudio);
+  }
 
   // ==========================================================================
   // Internationalization (i18n): English / Polish Language Switcher
   // ==========================================================================
-  let currentLang = 'EN';
 
   const translations = {
     EN: {
       brandSub: "अनिच्च · IMPERMANENCE",
       navBtns: ["01. ANICHA", "02. CHANGE", "03. AWARENESS", "04. PURPOSE", "05. STILLNESS"],
-      soundToggle: "AMBIENT SOUND",
+      soundToggle: isAudioPlaying ? "SOUND ON" : "AMBIENT SOUND",
       morphHint: "SCROLL DOWN TO MORPH",
       
       screen1: {
@@ -500,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
     PL: {
       brandSub: "अनिच्च · NIETRWAŁOŚĆ",
       navBtns: ["01. ANICHA", "02. ZMIANA", "03. ŚWIADOMOŚĆ", "04. CEL", "05. CISZA"],
-      soundToggle: "DŹWIĘK OTOCZENIA",
+      soundToggle: isAudioPlaying ? "DŹWIĘK WŁ." : "DŹWIĘK OTOCZENIA",
       morphHint: "PRZEWIŃ W DÓŁ ABY WEJŚĆ",
       
       screen1: {
@@ -590,8 +549,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btn) btn.textContent = label;
     });
 
-    const soundLabel = document.getElementById('sound-label-text');
-    if (soundLabel && isAudioPlaying) soundLabel.textContent = t.soundToggle;
+    const soundLabel = soundToggleBtn ? soundToggleBtn.querySelector('.sound-label') : null;
+    if (soundLabel) soundLabel.textContent = isAudioPlaying ? (lang === 'EN' ? 'SOUND ON' : 'DŹWIĘK WŁ.') : (lang === 'EN' ? 'AMBIENT SOUND' : 'DŹWIĘK OTOCZENIA');
 
     const morphHint = document.getElementById('morph-hint-text');
     if (morphHint) morphHint.textContent = t.morphHint;
@@ -679,49 +638,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const fBt = document.getElementById('footer-bottom-text'); if (fBt) fBt.textContent = t.footer.bottomText;
   }
 
-  const langToggleBtn = document.getElementById('lang-toggle');
   if (langToggleBtn) {
     langToggleBtn.addEventListener('click', () => {
       const nextLang = currentLang === 'EN' ? 'PL' : 'EN';
       applyLanguage(nextLang);
-    });
-  }
-});
-
-  // ==========================================================================
-  // Odnowa Retreat Modal Interactivity
-  // ==========================================================================
-  const openOdnowaBtn = document.getElementById('open-odnowa-btn');
-  const closeOdnowaBtn = document.getElementById('close-odnowa-btn');
-  const odnowaModal = document.getElementById('odnowa-modal');
-  const odnowaInquiryForm = document.getElementById('odnowa-inquiry-form');
-
-  if (openOdnowaBtn && odnowaModal) {
-    openOdnowaBtn.addEventListener('click', () => {
-      odnowaModal.classList.add('active');
-    });
-  }
-
-  if (closeOdnowaBtn && odnowaModal) {
-    closeOdnowaBtn.addEventListener('click', () => {
-      odnowaModal.classList.remove('active');
-    });
-  }
-
-  if (odnowaModal) {
-    odnowaModal.addEventListener('click', (e) => {
-      if (e.target === odnowaModal) {
-        odnowaModal.classList.remove('active');
-      }
-    });
-  }
-
-  if (odnowaInquiryForm) {
-    odnowaInquiryForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      alert('🌿 Thank you for your interest in Odnowa Retreat! We will send full sanctuary details and upcoming dates directly to your inbox.');
-      odnowaModal.classList.remove('active');
-      odnowaInquiryForm.reset();
     });
   }
 });
