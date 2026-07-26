@@ -774,7 +774,7 @@ p {
 }
 
 /* Schedule Tabs & Timeline */
-.tabs-nav {
+.tabs-nav, .schedule-tabs {
     display: flex;
     justify-content: center;
     gap: 12px;
@@ -856,7 +856,7 @@ p {
     margin-bottom: 4px;
 }
 
-.timeline-content {
+.timeline-content, .timeline-body {
     background: #FFFFFF;
     padding: 20px 24px;
     border-radius: var(--radius-md);
@@ -864,12 +864,12 @@ p {
     border: 1px solid var(--color-border);
 }
 
-.timeline-content h4 {
+.timeline-content h4, .timeline-body h4 {
     font-size: 1.4rem;
     margin-bottom: 6px;
 }
 
-.timeline-content p {
+.timeline-content p, .timeline-body p {
     font-size: 0.95rem;
 }
 
