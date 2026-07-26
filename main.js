@@ -38,36 +38,48 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "Still Lake", freq1: 136.10, freq2: 272.20, type1: "sine", type2: "triangle", cutoff: 800 }
   ];
 
-  // Preloader Engine: Track background video loading before revealing website
+  // Preloader Engine: Guaranteed video frame decoding & smooth presence loading
   const preloader = document.getElementById('site-preloader');
   const preloaderBarFill = document.getElementById('preloader-bar-fill');
   const preloaderStatus = document.getElementById('preloader-status');
 
-  let loadedVideoCount = 0;
-  const totalVideos = videoElements.length;
+  const startTime = Date.now();
+  const MIN_PRELOADER_TIME = 1800; // Guarantee 1.8s minimum presentation for smooth user experience
+  let isVideoReady = false;
 
-  function updatePreloaderProgress() {
-    loadedVideoCount++;
-    const percent = Math.min(100, Math.round((loadedVideoCount / totalVideos) * 100));
+  function setPreloaderProgress(percent) {
     if (preloaderBarFill) preloaderBarFill.style.width = `${percent}%`;
-    
-    if (loadedVideoCount >= totalVideos) {
-      dismissPreloader();
+  }
+
+  // Smooth progress bar animation
+  let currentPercent = 15;
+  setPreloaderProgress(15);
+  const progressInterval = setInterval(() => {
+    if (currentPercent < 90) {
+      currentPercent += Math.floor(Math.random() * 14) + 6;
+      setPreloaderProgress(Math.min(90, currentPercent));
     }
-  }
+  }, 160);
 
-  function dismissPreloader() {
-    if (!preloader || preloader.classList.contains('fade-out')) return;
-    if (preloaderBarFill) preloaderBarFill.style.width = '100%';
-    if (preloaderStatus) preloaderStatus.textContent = 'PRESENCE READY';
-    
+  function tryDismissPreloader() {
+    const elapsedTime = Date.now() - startTime;
+    const remainingTime = Math.max(0, MIN_PRELOADER_TIME - elapsedTime);
+
     setTimeout(() => {
-      preloader.classList.add('fade-out');
-      forcePlayAll();
-    }, 400);
+      clearInterval(progressInterval);
+      setPreloaderProgress(100);
+      if (preloaderStatus) preloaderStatus.textContent = 'PRESENCE READY';
+      
+      setTimeout(() => {
+        if (preloader && !preloader.classList.contains('fade-out')) {
+          preloader.classList.add('fade-out');
+          forcePlayAll();
+        }
+      }, 350);
+    }, remainingTime);
   }
 
-  // Ensure continuous playback across all 5 video layers
+  // Verify first video layer playback and frame rendering
   function initVideos() {
     videoElements.forEach((v) => {
       v.muted = true;
@@ -77,23 +89,44 @@ document.addEventListener('DOMContentLoaded', () => {
       v.setAttribute('muted', '');
       v.setAttribute('playsinline', '');
 
-      if (v.readyState >= 3) {
-        updatePreloaderProgress();
-      } else {
-        v.addEventListener('canplaythrough', updatePreloaderProgress, { once: true });
-        v.addEventListener('loadeddata', updatePreloaderProgress, { once: true });
-      }
-
       const p = v.play();
       if (p !== undefined) {
         p.catch(err => console.log('Autoplay deferred until user interaction:', err));
       }
     });
+
+    const heroVid = videoElements[0] || document.getElementById('video-1');
+    if (heroVid) {
+      const onHeroPlaying = () => {
+        if (isVideoReady) return;
+        isVideoReady = true;
+        tryDismissPreloader();
+      };
+
+      if (!heroVid.paused && heroVid.readyState >= 2) {
+        onHeroPlaying();
+      } else {
+        heroVid.addEventListener('playing', onHeroPlaying, { once: true });
+        heroVid.addEventListener('loadeddata', onHeroPlaying, { once: true });
+        heroVid.addEventListener('timeupdate', () => {
+          if (heroVid.currentTime > 0.05) {
+            onHeroPlaying();
+          }
+        });
+      }
+    } else {
+      tryDismissPreloader();
+    }
   }
+
   initVideos();
 
   // Safety fallback timeout (3.5s max) to ensure site reveals even on slow networks
-  setTimeout(dismissPreloader, 3500);
+  setTimeout(() => {
+    if (!isVideoReady) {
+      tryDismissPreloader();
+    }
+  }, 3500);
 
   // User interaction fallback to guarantee video playback across all browsers
   const forcePlayAll = () => {
