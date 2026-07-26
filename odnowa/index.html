@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Od-Nowa — Rodzinny Turnus Regeneracji i Rzemiosła</title>
+    <meta name="description" content="Kameralny, 3-dniowy turnus regeneracyjny obok Agroturystyki. Sauna, zimna rzeka, joga w lesie, kąpiele ziołowe Babci, stolarka Dziadka i kuchnia Izy. Max 8 osób.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Pitch Banner Toggle for Business Presentation (At the very top) -->
+    <div class="pitch-banner" id="pitchBanner">
+        <div class="pitch-banner-content">
+            <span>💡 <strong>Widok Prezentacyjny dla Rodziny:</strong> Koncept Od-Nowa z kalkulacją finansową i rolami.</span>
+            <button id="togglePitchBtn" class="btn-pitch-toggle">Włącz Tryb Biznesowy</button>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🌿</span>
+                <span class="logo-text">Od-Nowa <small>Retreat</small></span>
+            </a>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button class="nav-toggle" id="navToggle" aria-label="Otwórz menu">
+                <span class="hamburger-icon">☰</span>
+            </button>
+
+            <nav class="nav-menu" id="navMenu">
+                <a href="#o-koncepcie">O Koncepcie</a>
+                <a href="#atrakcje">Program</a>
+                <a href="#harmonogram">Harmonogram</a>
+                <a href="#kosztorys">Kosztorys & Cennik</a>
+                <a href="ulotki.html" class="nav-highlight" style="background:var(--color-accent); color:#fff; padding:6px 14px; border-radius:20px;">🖼️ Ulotki & Logo</a>
+                <a href="#dla-wlascicieli" class="nav-highlight">Widok Biznesowy</a>
+            </nav>
+
+            <div class="nav-badge">
+                <span class="pulse-dot"></span> Max 6–8 Osób
+            </div>
+        </div>
+    </header>
+
+    <!-- Business Pitch Card (Hidden by default, expandable) -->
+    <section class="pitch-panel" id="pitchPanel" style="display: none;">
+        <div class="container">
+            <div class="pitch-card-box">
+                <div class="pitch-header">
+                    <h2>🎯 Dlaczego Od-Nowa to idealny krok dla naszej Agroturystyki?</h2>
+                    <p>Wszystko opieramy na zasobach naszej rodziny – zero kosztów zewnętrznych agencji!</p>
+                </div>
+                <div class="pitch-grid">
+                    <div class="pitch-item">
+                        <div class="pitch-icon">👨‍👩‍👧‍👦</div>
+                        <h3>100% Siły Naszej Rodziny</h3>
+                        <p>Dziadek uczy stolarki, Babcia przygotowuje zioła, Tata prowadzi trasy rowerowe, Iza gotuje swojski kociołek, a Ty prowadzisz medytację. Zero dopłat dla zewnętrznych agencji!</p>
+                    </div>
+                    <div class="pitch-item">
+                        <div class="pitch-icon">📈</div>
+                        <h3>Wysoki Zysk z Turnusu</h3>
+                        <p>8 osób × 1 200 PLN = 9 600 PLN przychodu brutto za weekend. Po odliczeniu kosztów jedzenia i drewna zostaje <strong>~7 200 PLN czystego zysku</strong> dla rodziny.</p>
+                    </div>
+                    <div class="pitch-item">
+                        <div class="pitch-icon">🛡️</div>
+                        <h3>Zero Problemów Alkoholowych</h3>
+                        <p>Zamiast głośnych imprez i niszczenia pokojów – cisi, wdzięczni goście z miast szukający wyciszenia, zdrowia i kontaktu z naturą.</p>
+                    </div>
+                    <div class="pitch-item">
+                        <div class="pitch-icon">🍁</div>
+                        <h3>Idealny Start Jesienią</h3>
+                        <p>Wrzesień/Październik to idealny czas: chłodna rzeka, gorąca sauna, parujące balie ziołowe Babci i klimatyczne ogniska pod wiatą.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-tag">Kameralny Turnus Regeneracyjny • Michałkowa, Góry Sowie • 4–6 Września 2026</div>
+            <h1 class="hero-title">Głęboki reset ciała i umysłu. <br><em>Bez pośpiechu, bez alkoholu.</em></h1>
+            <p class="hero-subtitle">
+                3 dni w kameralnej grupie do 8 osób. Sauna nad zimną rzeką, kąpiele ziołowe, joga i medytacja w naszym jasnym pokoju na miejscu, stolarka oraz biesiadowanie przy ogniu.
+            </p>
+            <div class="hero-actions">
+                <a href="#harmonogram" class="btn btn-primary">Zobacz Harmonogram (4–6 Września)</a>
+                <a href="#kosztorys" class="btn btn-secondary">Kosztorys & Pakiet 1 200 zł</a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-pill">👥 <strong>Max 6–8 osób</strong> (Kameralność)</div>
+                <div class="stat-pill">💰 <strong>1 200 PLN / os.</strong> (Wszystko w cenie)</div>
+                <div class="stat-pill">🔥 <strong>Sauna & Zimny Potok</strong></div>
+                <div class="stat-pill">🧘 <strong>Własny Pokój do Jogi</strong></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section o-koncepcie" id="o-koncepcie">
+        <div class="container">
+            <div class="grid-2">
+                <div class="text-block">
+                    <span class="section-subtitle">Idea projektu</span>
+                    <h2>Dlaczego Od-Nowa w Michałkowej?</h2>
+                    <p class="lead">
+                        Większość wyjazdów agroturystycznych kończy się biernością i wieczornym alkoholem. <strong>Od-Nowa</strong> powstała po to, by dać alternatywę – wyjazd w Góry Sowie, z którego wracasz z pełną dawką naturalnej energii i wyciszenia.
+                    </p>
+                    <p>
+                        Połączyliśmy 14 aktywności w <strong>6 spójnych modułów tematycznych</strong>. Wszystko odbywa się u nas na miejscu: mamy własny duży pokój do jogi i medytacji, saunę ziołową nad chłodnym potokiem, wiatę z kociołkiem na ogniu oraz warsztat stolarski.
+                    </p>
+
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <span class="check-icon">✓</span>
+                            <div>
+                                <strong>Kameralność gwarantuje komfort:</strong>
+                                Grupa 6–8 osób sprawia, że w saunie i na warsztatach każdy ma pełną przestrzeń i opiekę.
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="check-icon">✓</span>
+                            <div>
+                                <strong>Własna Przestrzeń do Jogi & Medytacji:</strong>
+                                Posiadamy duży, jasny pokój w obiekcie dedykowany porannym sesjom jogi i wieczornym medytacjom bez potrzeby przemieszczania się.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Family Team Section -->
+    <section class="section rodzina" id="rodzina">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">Osobista Atmosfera</span>
+                <h2>Nasi Rodzinni Gospodarze</h2>
+                <p>Tworzymy wyjazd, w którym każdy członek naszej rodziny dzieli się swoim talentem i pasją.</p>
+            </div>
+
+            <div class="family-grid">
+                <div class="family-card">
+                    <div class="family-avatar">👴</div>
+                    <h3>Dziadek</h3>
+                    <span class="family-role">Rzemiosło & Woodwork</span>
+                    <p>Prowadzi warsztaty pracy z drewnem pod wiatą. Uczy tworzenia prostych desek, stopek i rękodzieła, które zabierasz ze sobą.</p>
+                </div>
+                <div class="family-card">
+                    <div class="family-avatar">👵</div>
+                    <h3>Babcia</h3>
+                    <span class="family-role">Zielarstwo & Kąpiele</span>
+                    <p>Znawczyni słowiańskich ziół. Przygotowuje autorskie infuzje ziołowe do bali oraz relaksujące napary do picia.</p>
+                </div>
+                <div class="family-card">
+                    <div class="family-avatar">🚴‍♂️</div>
+                    <h3>Tata</h3>
+                    <span class="family-role">Rowery & Spacery Leśne</span>
+                    <p>Zna każdy leśny zakątek. Prowadzi wycieczki rowerowe i spacery po okolicznych szlakach i punktach widokowych.</p>
+                </div>
+                <div class="family-card">
+                    <div class="family-avatar">🍲</div>
+                    <h3>Iza</h3>
+                    <span class="family-role">Swojska Kuchnia Wiejska</span>
+                    <p>Gotuje z sercem: swojski kociołek mięsno-warzywny na ogniu, domowe wędliny, wypiekany chleb i wiejskie sery.</p>
+                </div>
+                <div class="family-card">
+                    <div class="family-avatar">🧘‍♂️</div>
+                    <h3>Ty (Gospodarz)</h3>
+                    <span class="family-role">Medytacja & Uważność</span>
+                    <p>Prowadzisz sesje medytacyjne, morsowanie w zimnej rzece, rytuały saunowe i dbasz o dobrą energię całej grupy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Showcase -->
+    <section class="section atrakcje bg-light" id="atrakcje">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">Filary Doświadczeń</span>
+                <h2>Co robimy podczas turnusu?</h2>
+                <p>Wszystkie atrakcje są zaplanowane płynnie w małej grupie rotacyjnej.</p>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Card 1 -->
+                <div class="activity-card">
+                    <div class="card-image">
+                        <img src="images/hero_sauna.jpg" alt="Sauna i Morsowanie">
+                        <span class="card-tag">Żywioły</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Sauna & Zimna Rzeka</h3>
+                        <p>Sesje saunowe połączone z zanurzeniem w zimnej leśnej rzece tuż obok. Potężny reset układu nerwowego i odporności.</p>
+                        <ul class="card-bullets">
+                            <li>Rytuał saunowy z olejkami</li>
+                            <li>Zimna kąpiel w rzece</li>
+                            <li>Rotacja w małych podgrupach (3–4 osoby)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="activity-card">
+                    <div class="card-image">
+                        <img src="images/yoga.jpg" alt="Joga w lesie">
+                        <span class="card-tag">Ruch & Uważność</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Spacer Uważności & Joga</h3>
+                        <p>Poranny 20-minutowy spacer ścieżką leśną do sąsiedniej agroturystyki na profesjonalne zajęcia jogi w naturze.</p>
+                        <ul class="card-bullets">
+                            <li>Spacer uważności (Mindful Walk)</li>
+                            <li>Joga w sąsiednim obiekcie</li>
+                            <li>Medytacja i ćwiczenia oddechowe</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="activity-card">
+                    <div class="card-image">
+                        <img src="images/herbal_bath.jpg" alt="Kąpiele ziołowe">
+                        <span class="card-tag">Zioła Babci</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Ziołowe Kąpiele Babci</h3>
+                        <p>Relaksujące kąpiele w drewnianych baliach z naparami ze świeżych ziół przygotowanymi według receptur Babci.</p>
+                        <ul class="card-bullets">
+                            <li>Autorskie mieszanki ziołowe Babci</li>
+                            <li>Regeneracja skóry i mięśni</li>
+                            <li>Seans wieczorny pod gwiazdami</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="activity-card">
+                    <div class="card-image">
+                        <img src="images/bonfire.jpg" alt="Integracja przy ognisku">
+                        <span class="card-tag">Rzemiosło & Kuchnia</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Stolarka Dziadka & Kuchnia Izy</h3>
+                        <p>Warsztaty drewna z Dziadkiem pod wiatą oraz wieczorna biesiada z tradycyjnym kociołkiem Izy i wiejskim chlebem.</p>
+                        <ul class="card-bullets">
+                            <li>Stolarka & Woodwork z Dziadkiem</li>
+                            <li>Swojski kociołek i wędliny Izy</li>
+                            <li>Nocne rozmowy przy ogniu</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing & Cost Estimation Section -->
+    <section class="section kosztorys" id="kosztorys">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">Oferta & Opłacalność</span>
+                <h2>Kosztorys i Zysk Rodzinny</h2>
+                <p>Cena pakietowa dla uczestnika oraz wyliczenie czystego zysku dla rodziny za 3-dniowy turnus.</p>
+            </div>
+
+            <div class="pricing-wrapper">
+                <!-- Participant Package -->
+                <div class="price-box participant-box">
+                    <div class="price-badge">Pakiet Uczestnika</div>
+                    <h3>Od-Nowa Retreat (3 Dni)</h3>
+                    <div class="price-amount">1 200 <span>PLN / osobę</span></div>
+                    <p class="price-desc">Kameralna grupa max 8 osób. Pełne wyżywienie Izy, noclegi i wszystkie rodzinne warsztaty w cenie.</p>
+                    
+                    <ul class="price-features">
+                        <li><span>✓</span> 2 Noclegi w pokojach naszej agroturystyki</li>
+                        <li><span>✓</span> Swojska kuchnia Izy (kociołek na ogniu, domowe wędliny, chleb, śniadania)</li>
+                        <li><span>✓</span> Dostęp do Sauny i Zimnej Rzeki</li>
+                        <li><span>✓</span> Ziołowe Kąpiele w baliach przygotowane przez Babcię</li>
+                        <li><span>✓</span> Wycieczka na Jogę do sąsiedniej agroturystyki</li>
+                        <li><span>✓</span> Warsztaty Stolarskie z Dziadkiem (zabierasz własne rękodzieło)</li>
+                        <li><span>✓</span> Wycieczka rowerowa/piesza z Tatą & Medytacje</li>
+                    </ul>
+                </div>
+
+                <!-- Owner Profit Calculation -->
+                <div class="price-box owner-box">
+                    <div class="price-badge owner-badge">Szacunek dla Rodziny</div>
+                    <h3>Przychód & Czysty Zysk (Grupa 8 Osób)</h3>
+                    <div class="profit-highlight">
+                        <small>Przychód Brutto (8 × 1 200 zł):</small>
+                        <strong class="text-gold">9 600 PLN</strong>
+                    </div>
+
+                    <div class="cost-breakdown">
+                        <div class="cost-item">
+                            <span>Swojskie jedzenie Izy & produkty wiejskie:</span>
+                            <strong>~ 1 200 PLN</strong>
+                        </div>
+                        <div class="cost-item">
+                            <span>Drewno do sauny/balii/ogniska & zioła Babci:</span>
+                            <strong>~ 600 PLN</strong>
+                        </div>
+                        <div class="cost-item">
+                            <span>Wejściówki na Jogę w sąsiednim obiekcie:</span>
+                            <strong>~ 600 PLN</strong>
+                        </div>
+                        <div class="cost-item cost-total">
+                            <span><strong>Czysty Zysk dla Rodziny (na czysto):</strong></span>
+                    <strong class="text-green">~ 7 200 PLN / weekend</strong>
+                        </div>
+                    </div>
+
+                    <div class="owner-note">
+                        💡 <em>Dla porównania: Wynajem samych pokojów bez programu dałby rodzinie tylko 2 400 PLN. Turnus Od-Nowa daje 3-krotnie wyższy zysk i zerowe ryzyko hałaśliwych imprez!</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="section harmonogram" id="harmonogram">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">Plan od Piątku do Niedzieli</span>
+                <h2>Harmonogram Rotacyjny (4–6 Września)</h2>
+                <p>Przemyślany plan dla 8 osób (Podgrupa A: 4 osoby | Podgrupa B: 4 osoby) – brak tłoku i 100% atrakcji dla każdego.</p>
+            </div>
+
+            <div class="schedule-tabs">
+                <button class="tab-btn active" data-day="dzien1">Piątek: Lądowanie & Kociołek</button>
+                <button class="tab-btn" data-day="dzien2">Sobota: Joga, Rotacja Warsztatów & Żywioły</button>
+                <button class="tab-btn" data-day="dzien3">Niedziela: Rower, Zwieńczenie & Powrót</button>
+            </div>
+
+            <div class="schedule-content">
+                <!-- Day 1: Friday -->
+                <div class="tab-content active" id="dzien1">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span class="time">16:00 - 17:30</span>
+                            <div class="timeline-body">
+                                <h4>Przyjazd & Zakwaterowanie w Michałkowej</h4>
+                                <p>Powitalny mrożony napar ziołowy / kombucha Izy, rozpakowanie i odpoczynek po podróży.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">17:30 - 19:00</span>
+                            <div class="timeline-body">
+                                <h4>Silent Walk z Tatą (Wszyscy 8 os.)</h4>
+                                <p>Wspólny 20-minutowy spacer w milczeniu leśnym duktem Gór Sowich, rozluźnienie ramion i uziemienie.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">19:30 - 21:30</span>
+                            <div class="timeline-body">
+                                <h4>Obiadokolacja na Ogniu & 🔥 Rytuał 1: Krąg Intencji & Zwierzeń</h4>
+                                <p>Wspólny kociołek i podpłomyki pod wiatą. Na koniec posiłku przekazujemy sobie kamień intencji przy ogniu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2: Saturday -->
+                <div class="tab-content" id="dzien2">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span class="time">08:00 - 09:30</span>
+                            <div class="timeline-body">
+                                <h4>Joga w Pokoju na Miejscu & 👁️ Rytuał 2: Eye Gazing</h4>
+                                <p>Poranna Hatha Joga w naszym pokoju jogi, a na koniec 3–5 min patrzenia sobie w oczy w parach przy świecach.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">11:00 - 13:30</span>
+                            <div class="timeline-body">
+                                <h4>I Blok Rzemiosła (Rotacja 4 os. / 4 os.)</h4>
+                                <p><strong>Podgrupa A:</strong> Stolarka pod wiatą z Dziadkiem.<br><strong>Podgrupa B:</strong> Zielarstwo z Babcią.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">13:45 - 15:00</span>
+                            <div class="timeline-body">
+                                <h4>🌲 Rytuał 4: Spacer Zaufania w Parach (Partner Blind Walk)</h4>
+                                <p>Leśny spacer z Tatą, podczas którego w parach jedna osoba prowadzi drugą z zasłoniętymi oczami.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">15:15 - 17:30</span>
+                            <div class="timeline-body">
+                                <h4>II Blok Rzemiosła (Zamiana Rotacji 4 os. / 4 os.)</h4>
+                                <p><strong>Podgrupa A:</strong> Zielarstwo z Babcią.<br><strong>Podgrupa B:</strong> Stolarka pod wiatą z Dziadkiem.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">17:30 - 19:00</span>
+                            <div class="timeline-body">
+                                <h4>Obiadokolacja z Żywego Ognia z Izą & Chillout w Hamakach</h4>
+                                <p>Pyszne ciepłe dania z kociołka i czas na odpoczynek.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">19:00 - 21:15</span>
+                            <div class="timeline-body">
+                                <h4>Rytuał Żywiołów z Tatą & Babcią (Rotacja 4 os. / 4 os.)</h4>
+                                <p>Sauna z potokiem ↔ Gorąca Kąpiel Ziołowa w wannie pod gwiazdami.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">21:15 - 22:00</span>
+                            <div class="timeline-body">
+                                <h4>📜 Rytuał 3: Ceremonia Odpuszczenia (List do Ognia)</h4>
+                                <p>Pisanie na kartkach lęków/nawyków i symboliczne spalenie ich w płomieniach pod wiatą.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3: Sunday -->
+                <div class="tab-content" id="dzien3">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span class="time">08:00 - 09:30</span>
+                            <div class="timeline-body">
+                                <h4>Poranna Joga & Rozciąganie na Miejscu</h4>
+                                <p>Wybudzenie organizmu i relaksacja w naszym pokoju jogi.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">10:45 - 13:00</span>
+                            <div class="timeline-body">
+                                <h4>Leśna Mikro-Wyprawa z Tatą po Górach Sowich</h4>
+                                <p>Spacer do punktu widokowego z owocami i oddechem na kocykach.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">13:30 - 15:30</span>
+                            <div class="timeline-body">
+                                <h4>Obiadokolacja Finałowa z Izą & Pakowanie Pamiątek</h4>
+                                <p>Wspólny posiłek, pakowanie dębowych deseczek Dziadka i słoiczków ziołowych Babci.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="time">15:30 - 17:00</span>
+                            <div class="timeline-body">
+                                <h4>✨ Rytuał 5: Krąg Wdzięczności & Zamknięcie Turnusu</h4>
+                                <p>Wypowiedzenie słów wdzięczności przy ogniu, wręczenie dyplomów i pożegnanie gości.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden Collapsible Full Master Schedule for Hosts -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button id="toggleFullScheduleBtn" class="btn btn-secondary" style="font-size: 14px; padding: 10px 24px;">
+                    📋 Rozwiń Pełny Harmonogram ze Szczegółami Prowadzących
+                </button>
+            </div>
+
+            <div id="fullScheduleDrawer" style="display: none; margin-top: 30px; background: #fff; padding: 30px; border-radius: 16px; border: 1px solid #E2DDD5; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+                <h3 style="font-family:'Cormorant Garamond', serif; font-size: 26px; color: var(--color-primary); margin-top:0; border-bottom:2px solid var(--color-accent); padding-bottom:8px;">
+                    📌 Oficjalny Rozkład Działań dla Zespołu (Kamil, Tata, Babcia, Dziadek, Iza, Kasia)
+                </h3>
+
+                <div style="font-size: 14px; line-height: 1.7; color: var(--color-text-dark); margin-top: 16px;">
+                    <p><strong>Zasada Grupy 8-osobowej:</strong> Podział na Podgrupę A (4 os.) i Podgrupę B (4 os.) gwarantujący 100% atrakcji bez tłoku w saunie i stolarni.</p>
+
+                    <h4 style="color:var(--color-primary); margin-top:16px;">🟢 PIĄTEK</h4>
+                    <ul>
+                        <li><strong>16:00 - 17:30:</strong> Przyjazd, zimny napar ziołowy Izy.</li>
+                        <li><strong>17:30 - 19:00:</strong> Leśny Silent Walk z Tatą (pierwsze 15–20 min w milczeniu).</li>
+                        <li><strong>19:30 - 21:30:</strong> Obiadokolacja autorska Izy + Krąg Intencji z Kamilem + pisanie kartek odpuszczenia.</li>
+                        <li><strong>21:30 - 22:00:</strong> <em>(Opcjonalnie)</em> Medytacja Wieczorna z Teorią Buddyjską prowadzi Kamil.</li>
+                    </ul>
+
+                    <h4 style="color:var(--color-primary); margin-top:16px;">🟡 SOBOTA</h4>
+                    <ul>
+                        <li><strong>07:00 - 07:55:</strong> Warsztat Medytacji z Teorią Buddyjską z Kamilem (Anapana + Body Scan).</li>
+                        <li><strong>08:00 - 09:30:</strong> Poranna Joga z Kasią w naszym pokoju jogi na miejscu.</li>
+                        <li><strong>09:30 - 10:40:</strong> Śniadanie Gospodarskie Izy & Babci.</li>
+                        <li><strong>11:00 - 13:30:</strong> I Blok Rotacyjny: Podgrupa A (Stolarka z Dziadkiem) | Podgrupa B (Zielarstwo z Babcią).</li>
+                        <li><strong>13:45 - 15:00:</strong> Spacer Zaufania w Parach (Partner Blind Walk) z Tatą.</li>
+                        <li><strong>15:15 - 17:30:</strong> II Blok Rotacyjny: Podgrupa A (Zielarstwo z Babcią) | Podgrupa B (Stolarka z Dziadkiem).</li>
+                        <li><strong>17:30 - 19:00:</strong> Warsztaty gotowania z Izą & Główna Obiadokolacja z Ognia.</li>
+                        <li><strong>19:00 - 21:15:</strong> Rytuał Żywiołów z Tatą: Sauna + Potok ↔ Gorąca Kąpiel Ziołowa (z sokiem z czarnego bzu).</li>
+                        <li><strong>21:15 - 22:00:</strong> Uroczyste Spalenie Kartek Odpuszczenia pod wiatą + Medytacja Metta z Kamilem.</li>
+                    </ul>
+
+                    <h4 style="color:var(--color-primary); margin-top:16px;">🔴 NIEDZIELA</h4>
+                    <ul>
+                        <li><strong>07:00 - 07:55:</strong> Warsztat Medytacji Buddyjskiej z Kamilem (Anapana + Metta).</li>
+                        <li><strong>08:00 - 09:30:</strong> Poranna Joga z Kasią.</li>
+                        <li><strong>09:30 - 10:30:</strong> Śniadanie Gospodarskie.</li>
+                        <li><strong>10:45 - 13:00:</strong> Sudecki Posiadek & Wspólna Praca Kreatywna w Ogrodzie + Wystawa prac Dziadka i Babci z fotkami.</li>
+                        <li><strong>13:30 - 15:30:</strong> Obiadokolacja Finałowa Izy & Pakowanie pamiątkowych deseczek i słoiczków.</li>
+                        <li><strong>15:30 - 17:00:</strong> Krąg Wdzięczności z Kamilem i Rodziną + Wyjazd gości.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pitch Callout section for Owners -->
+    <section class="section pitch-cta" id="dla-wlascicieli">
+        <div class="container text-center">
+            <div class="cta-box">
+                <h2>Plan gotowy na pierwsze spotkanie rodzinne!</h2>
+                <p>Mamy kompletny pomysł, zespół rodzinny, stronę oraz wyliczenia finansowe. Pokazujemy rodzinie wizję Nowej Agroturystyki!</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary" id="btnShowPitchFull">Pokaż Widok Biznesowy dla Rodziny</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>🌿 <strong>Od-Nowa Retreat</strong> — Rodzinny projekt strefy regeneracji i integracji obok Agroturystyki.</p>
+            <p><small>Projekt stworzony dla Dziadka, Babci, Taty, Izy i całej Rodziny.</small></p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

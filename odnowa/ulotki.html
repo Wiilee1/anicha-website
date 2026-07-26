@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ulotki & Identyfikacja Wizualna — Od-Nowa Michałkowa (Góry Sowie)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #1E3E2B;
+            --color-accent: #C86D51;
+            --color-gold: #D4A373;
+            --color-bg-light: #F7F5F0;
+            --color-text-dark: #1F2421;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #EFECE6;
+            color: var(--color-text-dark);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .header-bar {
+            max-width: 1000px;
+            margin: 0 auto 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .header-bar h1 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--color-primary);
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .btn-print {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            color: var(--color-primary);
+            margin: 50px 0 20px;
+        }
+
+        /* Mockup showcase */
+        .mockup-container {
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            text-align: center;
+        }
+
+        .mockup-img {
+            max-width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+        }
+
+        /* Printable Flyers DL Layout */
+        .flyers-grid {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .dl-flyer {
+            width: 320px;
+            height: 680px;
+            background: #FAF8F5;
+            border: 1px solid #E2DDD5;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dl-flyer.front {
+            background-color: var(--color-primary);
+            color: #fff;
+        }
+
+        .dl-flyer.front h2, .dl-flyer.front p {
+            color: #fff;
+        }
+
+        .logo-box {
+            text-align: center;
+        }
+
+        .logo-box img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .logo-box h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 30px;
+            margin: 10px 0 4px;
+            letter-spacing: 1px;
+        }
+
+        .logo-box small {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 11px;
+            color: var(--color-gold);
+        }
+
+        .flyer-hero-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .flyer-tag {
+            background: rgba(212, 163, 115, 0.2);
+            color: var(--color-gold);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .flyer-body {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .flyer-bullets {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+            font-size: 12px;
+        }
+
+        .flyer-bullets li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .flyer-footer {
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 12px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .back .flyer-footer {
+            border-top-color: #E2DDD5;
+            color: var(--color-text-dark);
+        }
+
+        .qr-placeholder {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border: 1px solid #ccc;
+            margin: 8px auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        @media print {
+            .header-bar, .section-title, .mockup-container {
+                display: none;
+            }
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            .flyers-grid {
+                gap: 20px;
+            }
+            .dl-flyer {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-bar">
+        <div>
+            <h1>Materiały Promocyjne & Ulotki Od-Nowa</h1>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #666;">Gotowy zestaw wizualny: Logo, Ulotka dla Gości oraz Folder B2B dla Agroturystyki.</p>
+        </div>
+        <div>
+            <a href="index.html" class="btn-print" style="background:#888; margin-right:8px;">← Wróć do Strony</a>
+            <button onclick="window.print()" class="btn-print">🖨️ Drukuj Ulotki (PDF)</button>
+        </div>
+    </div>
+
+    <!-- 1. Logo Branding Showcase -->
+    <h2 class="section-title">1. Logo & Identyfikacja Wizualna</h2>
+    <div class="mockup-container">
+        <img src="images/logo.jpg" alt="Logo OdNowa Retreat" style="max-width: 380px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <p style="margin-top: 16px; font-size: 14px; color: #555;">
+            <strong>Koncepcja Logo:</strong> Połączenie gałązki sosnowej (natura/zielarstwo/drewno) z falą rzeki (sauna/zimna woda) w barwach głębokiej zieleni leśnej i ciepłej terrakoty.
+        </p>
+    </div>
+
+    <!-- 2. Flyer Mockup -->
+    <h2 class="section-title">2. Wizualizacja Druku Ulotek (Format DL 100x210mm)</h2>
+    <div class="mockup-container">
+        <img src="images/flyers_mockup.jpg" alt="Wizualizacja Ulotek OdNowa" class="mockup-img">
+    </div>
+
+    <!-- 3. Printable HTML DL Flyers -->
+    <h2 class="section-title">3. Gotowy Szablon Ulotki DL (Przód & Tył)</h2>
+
+    <div class="flyers-grid">
+
+        <!-- FRONT SIDE (Ulotka dla Gości) -->
+        <div class="dl-flyer front">
+            <div class="logo-box">
+                <img src="images/logo.jpg" alt="Logo">
+                <h2>Od-Nowa</h2>
+                <small>Retreat Regeneracyjny</small>
+            </div>
+
+            <img src="images/hero_sauna.jpg" class="flyer-hero-img" alt="Sauna nad rzeką">
+
+            <div class="flyer-body text-center">
+                <span class="flyer-tag">Max 6–8 Osoby • Bez Alkoholu</span>
+                <h3 style="color:#fff; font-family:'Cormorant Garamond', serif; font-size:22px; margin: 8px 0;">Głęboki Reset Ciała i Umysłu</h3>
+                <p style="font-size: 12px; opacity: 0.9;">
+                    3 dni w sercu natury. Zabiegi żywiołów, joga u sąsiadów, stolarka ręczna oraz biesiadowanie przy ogniu.
+                </p>
+            </div>
+
+            <div class="flyer-footer">
+                <strong>Wszystko w cenie: 1 200 PLN</strong><br>
+                <span>Noclegi • Wyżywienie • Sauny • Warsztaty</span>
+            </div>
+        </div>
+
+        <!-- BACK SIDE (Ulotka dla Gości) -->
+        <div class="dl-flyer back">
+            <div>
+                <h3 style="font-family:'Cormorant Garamond', serif; font-size:22px; color:var(--color-primary); margin-top:0;">Program 3-Dniowego Turnusu</h3>
+
+                <ul class="flyer-bullets">
+                    <li><strong>🔥 Żywioły:</strong> Sauna z aromaterapią, zimna rzeka & balie ziołowe</li>
+                    <li><strong>🧘 Ruch & Uważność:</strong> Joga u koleżanki w sąsiednim obiekcie + oddech</li>
+                    <li><strong>🪵 Rzemiosło:</strong> Warsztaty stolarskie i własnoręczna deska do domu</li>
+                    <li><strong>🌿 Ziemia:</strong> Tworzenie własnej herbaty ziołowej i soli kąpielowej</li>
+                    <li><strong>🥾 Wędrówki:</strong> Silent walk, wycieczki rowerowe i piknik w lesie</li>
+                    <li><strong>🍲 Smaki:</strong> Kociołek na ogniu, kombucha bar & czas w hamakach</li>
+                </ul>
+            </div>
+
+            <div style="background:#EFECE6; padding: 12px; border-radius: 8px; font-size: 11px;">
+                <strong>Dlaczego warto?</strong><br>
+                Ucieknij od przebodźcowania miastem. Wracasz z wyjazdu wypoczęty, wypoczęta i z nową dawką naturalnej energii.
+            </div>
+
+            <div class="flyer-footer">
+                <strong>Zarezerwuj Mjsce (Max 8 Osób)</strong>
+                <div class="qr-placeholder">QR CODE</div>
+                <small style="display:block; margin-top:4px;">www.odnowaretreat.pl • tel. 500 000 000</small>
+            </div>
+        </div>
+
+        <!-- B2B PITCH FLYER (Dla Właściciela Agro) -->
+        <div class="dl-flyer back" style="border: 2px solid var(--color-accent);">
+            <div style="background: var(--color-accent); color: #fff; padding: 6px 12px; margin: -24px -24px 16px -24px; text-align: center; font-weight: bold; font-size: 12px;">
+                DLA WŁAŚCICIELI AGROTURYSTYKI
+            </div>
+
+            <div class="logo-box">
+                <h2 style="color:var(--color-primary)">Oferta Współpracy</h2>
+                <small style="color:var(--color-accent)">Turnusy Regeneracyjne Od-Nowa</small>
+            </div>
+
+            <div class="flyer-body" style="margin-top: 12px;">
+                <h4 style="color:var(--color-primary); margin-bottom: 6px;">Dlaczego warto u nas uruchomić turnus?</h4>
+                <ul class="flyer-bullets">
+                    <li>📈 <strong>Wyższy przychód:</strong> do 9 600 zł z 1 weekendu zamiast taniego wynajmu.</li>
+                    <li>🛡️ <strong>Zero alkoholu:</strong> brak hałasu, imprez i zniszczeń w obiekcie.</li>
+                    <li>🤝 <strong>Współpraca lokalna:</strong> wykorzystanie sali u koleżanki na jogę.</li>
+                    <li>🌲 <strong>100% wykorzystania:</strong> sauny, rzeki, wiaty i tras rowerowych.</li>
+                </ul>
+            </div>
+
+            <div style="background: var(--color-primary); color: #fff; padding: 12px; border-radius: 8px; font-size: 11px; text-align: center;">
+                <strong>Wydajność z 1 turnusu (8 os.):</strong><br>
+                Przychód: 9 600 zł <br>
+                <strong>Zysk czysty Agro: ~4 800 zł / weekend</strong>
+            </div>
+
+            <div class="flyer-footer">
+                <strong>Porozmawiajmy o Pilotażu!</strong>
+                <small style="display:block; margin-top:4px;">Skontaktuj się ze mną, aby przygotować pierwszy wyjazd.</small>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

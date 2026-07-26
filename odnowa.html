@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Odnowa Retreat — Flagship Sanctuary | ANICHA</title>
+  <meta name="description" content="Odnowa (Renewal) is the flagship retreat sanctuary under Anicha Hub. Experience deep presence, sound baths, breathwork, and conscious offline community.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Dedicated Subpage Styles for Odnowa */
+    body {
+      overflow-y: auto !important;
+      overflow-x: hidden;
+      background: #08080c;
+      color: #fff;
+    }
+
+    .subpage-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      background: rgba(8, 8, 12, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      transition: var(--transition-smooth);
+    }
+
+    .back-btn:hover {
+      transform: translateX(-4px);
+      color: #fff;
+    }
+
+    .odnowa-hero {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 24px 80px 24px;
+      position: relative;
+      background: radial-gradient(circle at 50% 30%, rgba(229, 204, 159, 0.15), transparent 70%);
+    }
+
+    .odnowa-tag {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      background: rgba(229, 204, 159, 0.12);
+      border: 1px solid rgba(229, 204, 159, 0.3);
+      padding: 6px 18px;
+      border-radius: 20px;
+    }
+
+    .odnowa-main-title {
+      font-family: var(--font-serif);
+      font-size: clamp(48px, 8vw, 84px);
+      font-weight: 600;
+      line-height: 1.05;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #ffffff 0%, #e5cc9f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .odnowa-hero-description {
+      max-width: 680px;
+      font-size: 18px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 36px;
+    }
+
+    .subpage-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 120px 24px;
+    }
+
+    .sanctuary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+
+    .sanctuary-card {
+      padding: 32px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(229, 204, 159, 0.25);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      transition: var(--transition-smooth);
+    }
+
+    .sanctuary-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(229, 204, 159, 0.6);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(229, 204, 159, 0.3);
+    }
+
+    .sanctuary-card .card-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .sanctuary-card h3 {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .sanctuary-card p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .flow-section {
+      padding: 60px 40px;
+      border-radius: 32px;
+      background: rgba(229, 204, 159, 0.05);
+      border: 1px solid rgba(229, 204, 159, 0.3);
+      margin-bottom: 80px;
+    }
+
+    .flow-title {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 40px;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 20px 24px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .timeline-time {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      min-width: 90px;
+    }
+
+    .timeline-desc h4 {
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .timeline-desc p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .reservation-box {
+      text-align: center;
+      padding: 60px 32px;
+      border-radius: 32px;
+      background: rgba(20, 20, 28, 0.85);
+      border: 1px solid rgba(229, 204, 159, 0.4);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9);
+    }
+
+    .reservation-box h2 {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .reservation-box p {
+      max-width: 540px;
+      margin: 0 auto 32px auto;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+    }
+
+    .reservation-form {
+      display: flex;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .reservation-input {
+      flex: 1;
+      padding: 16px 20px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .reservation-input:focus {
+      border-color: var(--accent-gold);
+    }
+
+    @media (max-width: 768px) {
+      .subpage-header {
+        padding: 18px 24px;
+      }
+      .odnowa-hero {
+        padding-top: 110px;
+      }
+      .reservation-form {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Subpage Header -->
+  <header class="subpage-header">
+    <a href="index.html" class="back-btn">
+      <span>←</span>
+      <span>BACK TO ANICHA</span>
+    </a>
+
+    <div class="brand">
+      <span class="brand-title">ANICHA</span>
+      <span class="brand-subtitle">ODNOWA SANCTUARY</span>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="odnowa-hero">
+    <span class="odnowa-tag">ANICHA RETREATS · FLAGSHIP SANCTUARY</span>
+    <h1 class="odnowa-main-title">🌿 Odnowa Retreat</h1>
+    <p class="odnowa-hero-description">
+      Step off-screen into a sacred physical sanctuary. Odnowa (Renewal) is our flagship retreat designed for profound stillness, sound healing, breathwork, and authentic human connection.
+    </p>
+  </section>
+
+  <!-- Main Subpage Container -->
+  <main class="subpage-container">
+
+    <!-- 4 Sanctuary Experience Pillars -->
+    <div class="sanctuary-grid">
+      <div class="sanctuary-card">
+        <div class="card-icon">🧘</div>
+        <h3>Mindful Stillness & Pali Wisdom</h3>
+        <p>
+          Immerse yourself in daily guided meditation and Pali impermanence (<em>Anicca</em>) teachings. Learn to quiet modern mental noise and cultivate unshakeable presence.
+        </p>
+      </div>
+
+      <div class="sanctuary-card">
+        <div class="card-icon">🎶</div>
+        <h3>Sound Baths & Breathwork</h3>
+        <p>
+          Experience deep acoustic sound healing and conscious breathwork journeys that release trapped physical tension and restore inner nervous system harmony.
+        </p>
+      </div>
+
+      <div class="sanctuary-card">
+        <div class="card-icon">🌲</div>
+        <h3>Natural Off-Screen Sanctuaries</h3>
+        <p>
+          Hosted in secluded natural environments—surrounded by ancient forests, tranquil waters, and open skies. Disconnect completely from digital devices.
+        </p>
+      </div>
+
+      <div class="sanctuary-card">
+        <div class="card-icon">🤝</div>
+        <h3>Conscious Offline Community</h3>
+        <p>
+          Share nourishing plant-based meals and authentic conversations with like-minded human beings in a safe, warm, and non-judgmental space.
+        </p>
+      </div>
+    </div>
+
+    <!-- Daily Flow / Retreat Experience Timeline -->
+    <div class="flow-section">
+      <h2 class="flow-title">A Day at Odnowa</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-time">07:00 AM</div>
+          <div class="timeline-desc">
+            <h4>Morning Silence & Sunrise Breathwork</h4>
+            <p>Awaken gently with guided breathwork and tea ceremony in stillness.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">09:30 AM</div>
+          <div class="timeline-desc">
+            <h4>Nourishing Plant-Based Breakfast</h4>
+            <p>Fresh, organic meals sourced locally to ground your physical energy.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">11:00 AM</div>
+          <div class="timeline-desc">
+            <h4>Mindful Movement & Anicca Teaching</h4>
+            <p>Somatic movement exploration and philosophical discussion on living with change.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">04:30 PM</div>
+          <div class="timeline-desc">
+            <h4>Acoustic Sound Bath Immersion</h4>
+            <p>Lie back in total relaxation as singing bowls and gong frequencies quiet the mind.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">07:30 PM</div>
+          <div class="timeline-desc">
+            <h4>Evening Fire Circle & Gathering</h4>
+            <p>Authentic sharing and stargazing around the campfire off-screen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End-Customer Reservation Box -->
+    <div class="reservation-box">
+      <h2>Reserve Your Sanctuary Spot</h2>
+      <p>
+        Invitations to Odnowa are kept intimate to preserve sacred group energy. Join the waitlist to receive upcoming retreat dates and priority booking.
+      </p>
+      <form class="reservation-form" onsubmit="event.preventDefault(); alert('🌿 Thank you for joining the Odnowa waitlist! We will send retreat details and priority booking invitations directly to your email.');">
+        <input type="email" placeholder="Enter your email address" required class="reservation-input">
+        <button type="submit" class="cta-btn">Join Waitlist</button>
+      </form>
+    </div>
+
+  </main>
+
+</body>
+</html>

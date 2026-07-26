@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANICHA — A Practice in Presence</title>
+  <meta name="description" content="An interactive philosophical journey exploring Pali impermanence (Anicca) across Silk, Desert, Waves, Clouds, Stillness, Odnowa PL Retreat, 4 Pillars with logos, and Founder's journey.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Fixed Background Video Wrapper (720p Video Layers) -->
+  <div class="video-background-wrap">
+    <video id="video-1" class="bg-video video-layer silk-video" src="Fabric720.mp4" autoplay loop muted playsinline preload="auto"></video>
+    <video id="video-2" class="bg-video video-layer" src="Desert720.mp4" autoplay loop muted playsinline preload="auto"></video>
+    <video id="video-3" class="bg-video video-layer" src="Waves720.mp4" autoplay loop muted playsinline preload="auto"></video>
+    <video id="video-4" class="bg-video video-layer" src="Clouds720.mp4" autoplay loop muted playsinline preload="auto"></video>
+    <video id="video-5" class="bg-video video-layer" src="Lake720.mp4" autoplay loop muted playsinline preload="auto"></video>
+  </div>
+
+  <!-- Overlay Grain / Vignette -->
+  <div class="ambient-overlay"></div>
+
+  <!-- Fixed Header -->
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-title">ANICHA</span>
+      <span class="brand-subtitle" id="brand-sub">अनिच्च · IMPERMANENCE</span>
+    </div>
+
+    <nav class="nav-links" id="nav-links">
+      <button class="nav-btn active" data-section="0" id="nav-btn-0">01. ANICHA</button>
+      <button class="nav-btn" data-section="1" id="nav-btn-1">02. CHANGE</button>
+      <button class="nav-btn" data-section="2" id="nav-btn-2">03. AWARENESS</button>
+      <button class="nav-btn" data-section="3" id="nav-btn-3">04. PURPOSE</button>
+      <button class="nav-btn" data-section="4" id="nav-btn-4">05. STILLNESS</button>
+    </nav>
+
+    <div class="header-actions">
+      <!-- Language Switcher EN / PL -->
+      <button id="lang-toggle" class="icon-btn lang-btn" title="Switch Language (EN / PL)">
+        <span class="lang-icon">🌐</span>
+        <span id="lang-label" class="lang-label">EN / PL</span>
+      </button>
+
+      <button id="sound-toggle" class="icon-btn" title="Toggle Ambient Sound">
+        <span class="sound-icon">🔈</span>
+        <span class="sound-label" id="sound-label-text">AMBIENT SOUND</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Horizontal Scroll Container (4 Mission Screens: ANICHA, CHANGE, AWARENESS, PURPOSE) -->
+  <main class="horizontal-scroll-container" id="scroll-container">
+    
+    <!-- Screen 1: ANICHA -->
+    <section class="scroll-section" id="section-silk">
+      <div class="section-content statement-content">
+        <div class="hero-tag" id="screen1-tag">01 · IMPERMANENCE</div>
+        <h1 class="centered-brand-title">ANICHA</h1>
+        <p class="statement-sub" id="screen1-sub">Derived from Pali <em>Anicca</em> (अनिच्च) · Everything is impermanent</p>
+        <p class="statement-tagline" id="screen1-tagline"><em>A practice in presence.</em></p>
+        <div class="scroll-hint-wrap">
+          <span class="scroll-arrow">→</span>
+          <span class="scroll-text" id="screen1-scroll">Scroll to explore</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 2: CHANGE -->
+    <section class="scroll-section" id="section-desert">
+      <div class="section-content statement-content">
+        <div class="hero-tag" id="screen2-tag">02 · SHIFTING TRUTH</div>
+        <h2 class="statement-heading" id="screen2-heading">We believe that everything changes.</h2>
+        <p class="statement-body" id="screen2-body">Fighting that truth only creates suffering.</p>
+      </div>
+    </section>
+
+    <!-- Screen 3: AWARENESS -->
+    <section class="scroll-section" id="section-waves">
+      <div class="section-content statement-content">
+        <div class="hero-tag" id="screen3-tag">03 · AWARENESS</div>
+        <h2 class="statement-heading" id="screen3-heading">Awareness begins<br>when we stop trying to hold on.</h2>
+        <p class="statement-body" id="screen3-body">Stillness follows.</p>
+      </div>
+    </section>
+
+    <!-- Screen 4: PURPOSE (Matching Screens 2 & 3 Typography) -->
+    <section class="scroll-section" id="section-clouds">
+      <div class="section-content statement-content">
+        <div class="hero-tag" id="screen4-tag">04 · PURPOSE</div>
+        <h2 class="statement-heading" id="screen4-heading">
+          We create experiences, products, and spaces
+        </h2>
+        <p class="statement-body" id="screen4-body">
+          that help people live with presence, embrace change, and return to themselves.
+        </p>
+        <div class="scroll-hint-wrap">
+          <span class="scroll-arrow">↓</span>
+          <span class="scroll-text" id="screen4-scroll">Scroll down into stillness</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Section 5: STILLNESS / CLEAR SKY (Vertical Scroll Downward Below Purpose) -->
+  <section class="vertical-section-stillness" id="section-stillness">
+    <div class="continuous-vertical-scroll">
+      
+      <!-- 1. TOP OF SECTION 5: ODNOWA RETREAT SHOWCASE (PL, One-off Themed, 8 Spots, Vertically Stacked List with Right Descriptions) -->
+      <div class="clean-section odnowa-clean-section hero-odnowa-card">
+        <div class="odnowa-header-row">
+          <span class="chip chip-pl" id="odnowa-pl-chip">🇵🇱 PL · POLAND</span>
+          <span class="chip chip-themed" id="odnowa-event-chip">ONE-OFF THEMED RETREAT</span>
+          <span class="chip chip-seats" id="odnowa-seats-chip">🔥 ONLY 8 PLACES AVAILABLE</span>
+        </div>
+        
+        <h2 class="clean-heading odnowa-title" id="odnowa-title">🌿 Odnowa (Renewal)</h2>
+        <p class="odnowa-sub-title" id="odnowa-subtitle">Intimate Theme Retreat in Poland</p>
+        <p class="clean-text odnowa-lead" id="odnowa-lead">
+          Odnowa is an intimate, one-off themed retreat hosted in Poland under Anicha Hub. Step away from digital noise into a quiet sanctuary of somatic yoga, guided meditation, introspective workshops, and authentic offline community.
+        </p>
+
+        <!-- Vertical Stacked Features: Title/Icon Left, Description Right -->
+        <div class="odnowa-vertical-list">
+          
+          <div class="odnowa-list-row">
+            <div class="odnowa-row-left">
+              <span class="feat-icon">🧘</span>
+              <strong class="feat-name" id="odnowa-feat1-title">Soma Yoga</strong>
+            </div>
+            <div class="odnowa-row-right">
+              <p id="odnowa-feat1-desc">Deep body awareness practices, grounding, and gentle tension release.</p>
+            </div>
+          </div>
+
+          <div class="odnowa-list-row">
+            <div class="odnowa-row-left">
+              <span class="feat-icon">🕯️</span>
+              <strong class="feat-name" id="odnowa-feat2-title">Guided Meditation</strong>
+            </div>
+            <div class="odnowa-row-right">
+              <p id="odnowa-feat2-desc">Mindfulness training and quiet presence in an Analog Zen ethos.</p>
+            </div>
+          </div>
+
+          <div class="odnowa-list-row">
+            <div class="odnowa-row-left">
+              <span class="feat-icon">🗣️</span>
+              <strong class="feat-name" id="odnowa-feat3-title">Workshops & Circles</strong>
+            </div>
+            <div class="odnowa-row-right">
+              <p id="odnowa-feat3-desc">Authentic communication, reflection, and deep self-inquiry circles.</p>
+            </div>
+          </div>
+
+          <div class="odnowa-list-row">
+            <div class="odnowa-row-left">
+              <span class="feat-icon">🌲</span>
+              <strong class="feat-name" id="odnowa-feat4-title">Offline Community</strong>
+            </div>
+            <div class="odnowa-row-right">
+              <p id="odnowa-feat4-desc">Genuine human connection in a natural sanctuary off-screen (Strictly max 8 spots).</p>
+            </div>
+          </div>
+
+        </div>
+
+        <a href="odnowa/index.html" target="_blank" class="cta-btn odnowa-cta-btn">
+          <span id="odnowa-cta-text">Explore & Reserve Odnowa Retreat (PL)</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+
+      <!-- 2. THE 4 PILLARS OF ANICHA (Full-bleed Screens with High-Visibility White Background Logos) -->
+      <div class="sky-intro-header">
+        <div class="hero-tag" id="pillars-tag">05 · ECOSYSTEM</div>
+        <h2 class="sky-title" id="pillars-title">The 4 Pillars of Anicha</h2>
+        <p class="sky-subtitle" id="pillars-subtitle">Living expressions of impermanence across connection, media, body, and open-source mind.</p>
+      </div>
+
+      <div class="pillars-vertical-container">
+
+        <!-- Pillar 1: Anicha Hub -->
+        <div class="pillar-full-screen-card">
+          <div class="pillar-logo-wrap">
+            <img src="Anicha Hub.png" alt="Anicha Hub Logo" class="pillar-logo-img">
+          </div>
+          <div class="pillar-card-content">
+            <span class="pillar-num" id="p1-num">PILLAR 01</span>
+            <h3 class="pillar-name" id="p1-name">Anicha Hub</h3>
+            <p class="pillar-role-title" id="p1-role">THE CONNECTION</p>
+            <p class="pillar-desc" id="p1-desc">
+              A community space and platform for hosted retreats, independent facilitators, and sacred real-world gatherings off-screen.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pillar 2: Anicha Media -->
+        <div class="pillar-full-screen-card">
+          <div class="pillar-logo-wrap">
+            <img src="Anicha Media.png" alt="Anicha Media Logo" class="pillar-logo-img">
+          </div>
+          <div class="pillar-card-content">
+            <span class="pillar-num" id="p2-num">PILLAR 02</span>
+            <h3 class="pillar-name" id="p2-name">Anicha Media</h3>
+            <p class="pillar-role-title" id="p2-role">THE VOICE</p>
+            <p class="pillar-desc" id="p2-desc">
+              A conscious media platform and agency centered on honest marketing, ethical growth, and respectful, non-manipulative storytelling.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pillar 3: Gaut -->
+        <div class="pillar-full-screen-card">
+          <div class="pillar-logo-wrap">
+            <img src="GAUT AGAIN.png" alt="Gaut Logo" class="pillar-logo-img gaut-logo-img">
+          </div>
+          <div class="pillar-card-content">
+            <span class="pillar-num" id="p3-num">PILLAR 03</span>
+            <h3 class="pillar-name" id="p3-name">Gaut</h3>
+            <p class="pillar-role-title" id="p3-role">THE BODY</p>
+            <p class="pillar-desc" id="p3-desc">
+              A conscious clothing line built for daily movement, stillness, and grounding. Minimalist cuts and sustainable organic fabrics. Gaut is Anicha Wear.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pillar 4: Siddha -->
+        <div class="pillar-full-screen-card">
+          <div class="pillar-logo-wrap">
+            <img src="Siddha logo no text.png" alt="Siddha Logo" class="pillar-logo-img siddha-logo-img">
+          </div>
+          <div class="pillar-card-content">
+            <span class="pillar-num" id="p4-num">PILLAR 04</span>
+            <h3 class="pillar-name" id="p4-name">Siddha</h3>
+            <p class="pillar-role-title" id="p4-role">THE MIND (OPEN SOURCE)</p>
+            <p class="pillar-desc" id="p4-desc">
+              An open-source, gamified meditation companion app featuring the little cloud mascot Siddha, built with an Analog Zen ethos.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 3. FOUNDER'S JOURNEY, QUALIFICATIONS & CONTACT -->
+      <div class="clean-section founder-full-card">
+        <span class="section-tag" id="founder-tag">THE FOUNDER'S JOURNEY</span>
+        <h2 class="clean-heading" id="founder-title">Living with Impermanence</h2>
+        <p class="clean-text" id="founder-text">
+          My journey with Anicha began with a profound realization of Pali impermanence (<em>Anicca</em>)—that life cannot be trapped in rigid corporate templates or digital distraction. I created Anicha to build a living ecosystem where media is honest, apparel grounds the body, mindfulness tools belong to the community, and physical retreats bring us back together off-screen.
+        </p>
+
+        <div class="qualification-box">
+          <h4 class="qual-title" id="qual-title">🎓 Why Am I Qualified?</h4>
+          <ul class="qual-list">
+            <li id="qual-li1"><strong>Decade of Mindful Practice:</strong> Deep immersive background in Pali mindfulness, Vipassana retreats, and somatic yoga.</li>
+            <li id="qual-li2"><strong>Conscious Entrepreneurship:</strong> Experienced in creating authentic brands, ethical media storytelling, and non-exploitative community platforms.</li>
+            <li id="qual-li3"><strong>Facilitation & Space Holding:</strong> Proven experience curating intimate offline gatherings, contemplative workshops, and sanctuary spaces.</li>
+          </ul>
+        </div>
+
+        <div class="contact-box">
+          <h4 class="contact-title" id="contact-title">✉️ Connect & Collaborate</h4>
+          <p class="contact-desc" id="contact-desc">
+            Have questions about Anicha Hub, Gaut apparel, Siddha open-source app, or joining the next Odnowa retreat?
+          </p>
+          <div class="contact-links">
+            <a href="mailto:hello@anicha.com" class="contact-btn" id="contact-btn-text">Email Founder</a>
+            <span class="contact-location" id="contact-location">📍 Poland & Global Digital Workspace</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 4. FOOTER & SIDE-BY-SIDE SOCIAL MEDIA PLACEHOLDERS -->
+      <footer class="site-footer">
+        <div class="footer-grid">
+          <div class="footer-col brand-col">
+            <h3 class="footer-brand">ANICHA</h3>
+            <p class="footer-quote" id="footer-quote">“Sabbe saṅkhārā aniccā — All conditioned things are impermanent.”</p>
+          </div>
+
+          <div class="footer-col">
+            <h4 id="fcol-ecosystem">ECOSYSTEM</h4>
+            <ul>
+              <li><a href="#section-stillness">Anicha Hub</a></li>
+              <li><a href="#section-stillness">Anicha Media</a></li>
+              <li><a href="#section-stillness">Gaut Wear</a></li>
+              <li><a href="#section-stillness">Siddha App</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4 id="fcol-retreats">RETREATS</h4>
+            <ul>
+              <li><a href="odnowa/index.html" target="_blank">Odnowa PL (Retreat)</a></li>
+              <li><a href="#" id="fcol-gatherings">Upcoming Gatherings</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4 id="fcol-social">SOCIAL & COMMUNITY</h4>
+            <!-- Side-by-side horizontal social tags -->
+            <div class="social-tags-wrap">
+              <span class="social-chip">📷 @anicha.hub</span>
+              <span class="social-chip">🎬 @anichamedia</span>
+              <span class="social-chip">👕 @gautwear</span>
+              <span class="social-chip">☁️ @siddha.app</span>
+              <span class="social-chip">🌿 @odnowa.retreat</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span id="footer-bottom-text">© 2026 ANICHA Ecosystem. Built with presence & Pali ethos.</span>
+          <span class="pali-sig">अनिच्च · Pali impermanence</span>
+        </div>
+      </footer>
+
+    </div>
+  </section>
+
+  <!-- Bottom Navigation & Progress Bar -->
+  <footer class="bottom-bar">
+    <div class="progress-info">
+      <span id="current-section">01</span>
+      <span class="divider">/</span>
+      <span class="total-sections">05</span>
+    </div>
+
+    <div class="progress-track-wrapper" id="progress-track">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+      <div class="progress-thumb" id="progress-thumb"></div>
+    </div>
+
+    <div class="scroll-indicator-text">
+      <span id="morph-hint-text">SCROLL DOWN TO MORPH</span>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="main.js"></script>
+</body>
+</html>
