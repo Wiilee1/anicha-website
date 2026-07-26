@@ -1,0 +1,22 @@
+{
+  "name": "anicha-website",
+  "version": "1.0.0",
+  "description": "ANICHA — A Practice in Presence",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'Static site - no build required'",
+    "lint": "echo 'No linter configured'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "anicha",
+    "impermanence",
+    "mindfulness"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.1.0"
+  }
+}
