@@ -38,6 +38,35 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "Still Lake", freq1: 136.10, freq2: 272.20, type1: "sine", type2: "triangle", cutoff: 800 }
   ];
 
+  // Preloader Engine: Track background video loading before revealing website
+  const preloader = document.getElementById('site-preloader');
+  const preloaderBarFill = document.getElementById('preloader-bar-fill');
+  const preloaderStatus = document.getElementById('preloader-status');
+
+  let loadedVideoCount = 0;
+  const totalVideos = videoElements.length;
+
+  function updatePreloaderProgress() {
+    loadedVideoCount++;
+    const percent = Math.min(100, Math.round((loadedVideoCount / totalVideos) * 100));
+    if (preloaderBarFill) preloaderBarFill.style.width = `${percent}%`;
+    
+    if (loadedVideoCount >= totalVideos) {
+      dismissPreloader();
+    }
+  }
+
+  function dismissPreloader() {
+    if (!preloader || preloader.classList.contains('fade-out')) return;
+    if (preloaderBarFill) preloaderBarFill.style.width = '100%';
+    if (preloaderStatus) preloaderStatus.textContent = 'PRESENCE READY';
+    
+    setTimeout(() => {
+      preloader.classList.add('fade-out');
+      forcePlayAll();
+    }, 400);
+  }
+
   // Ensure continuous playback across all 5 video layers
   function initVideos() {
     videoElements.forEach((v) => {
@@ -48,6 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
       v.setAttribute('muted', '');
       v.setAttribute('playsinline', '');
 
+      if (v.readyState >= 3) {
+        updatePreloaderProgress();
+      } else {
+        v.addEventListener('canplaythrough', updatePreloaderProgress, { once: true });
+        v.addEventListener('loadeddata', updatePreloaderProgress, { once: true });
+      }
+
       const p = v.play();
       if (p !== undefined) {
         p.catch(err => console.log('Autoplay deferred until user interaction:', err));
@@ -55,6 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   initVideos();
+
+  // Safety fallback timeout (3.5s max) to ensure site reveals even on slow networks
+  setTimeout(dismissPreloader, 3500);
 
   // User interaction fallback to guarantee video playback across all browsers
   const forcePlayAll = () => {
@@ -127,17 +166,29 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScrollUI();
   }
 
-  // Intercept Mouse Wheel / Trackpad Scroll Gesture
+  // Intercept Mouse Wheel / Trackpad Scroll Gesture (Strict 1-Section-Per-Gesture Lock)
+  let lastStepTime = 0;
+  const STEP_COOLDOWN = 800; // ms minimum lock between section changes
+
   window.addEventListener('wheel', (e) => {
+    const now = Date.now();
+    
+    // Lock section transition if within cooldown period
+    if (isTransitioning || now - lastStepTime < STEP_COOLDOWN) {
+      if (window.scrollY <= 60) {
+        e.preventDefault();
+      }
+      return;
+    }
+
     // If inside Section 5 (window.scrollY > 40)
     if (window.scrollY > 40) {
       if (window.scrollY <= 80 && e.deltaY < 0) {
         e.preventDefault();
-        if (!isTransitioning) {
-          isTransitioning = true;
-          goToSection(3);
-          setTimeout(() => { isTransitioning = false; }, 500);
-        }
+        isTransitioning = true;
+        lastStepTime = now;
+        goToSection(3);
+        setTimeout(() => { isTransitioning = false; }, STEP_COOLDOWN);
       }
       return; // Allow natural scrolling inside Section 5
     }
@@ -146,26 +197,27 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
 
-    if (Math.abs(delta) > 5 && !isTransitioning) {
+    if (Math.abs(delta) > 6) {
       isTransitioning = true;
+      lastStepTime = now;
 
-      if (delta > 0) {
+      if (delta > 0) { // Scroll Down / Right -> Next Section ONLY
         if (activeSectionIndex < 3) {
           goToSection(activeSectionIndex + 1);
         } else if (activeSectionIndex === 3) {
           goToSection(4);
         }
-      } else if (delta < 0) {
+      } else if (delta < 0) { // Scroll Up / Left -> Prev Section ONLY
         if (activeSectionIndex > 0 && activeSectionIndex <= 3) {
           goToSection(activeSectionIndex - 1);
         }
       }
 
-      setTimeout(() => { isTransitioning = false; }, 500);
+      setTimeout(() => { isTransitioning = false; }, STEP_COOLDOWN);
     }
   }, { passive: false });
 
-  // Touch Swipe Gesture Handler (Supports both Vertical & Horizontal Swipes)
+  // Touch Swipe Gesture Handler (Supports both Vertical & Horizontal Swipes, Strict 1-Section Lock)
   let touchStartX = 0;
   let touchStartY = 0;
 
@@ -177,7 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   window.addEventListener('touchend', (e) => {
-    if (e.changedTouches.length === 0 || isTransitioning) return;
+    if (e.changedTouches.length === 0) return;
+    const now = Date.now();
+    if (isTransitioning || now - lastStepTime < STEP_COOLDOWN) return;
     
     const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
@@ -186,21 +240,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Check if horizontal swipe is dominant on statement screens
     if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 35 && window.scrollY <= 60) {
+      isTransitioning = true;
+      lastStepTime = now;
+
       if (diffX > 0) { // Swipe Left -> Next Section
         if (activeSectionIndex < 3) {
-          isTransitioning = true;
           goToSection(activeSectionIndex + 1);
-          setTimeout(() => { isTransitioning = false; }, 500);
         } else if (activeSectionIndex === 3) {
-          isTransitioning = true;
           goToSection(4);
-          setTimeout(() => { isTransitioning = false; }, 500);
         }
       } else if (diffX < 0 && activeSectionIndex > 0) { // Swipe Right -> Prev Section
-        isTransitioning = true;
         goToSection(activeSectionIndex - 1);
-        setTimeout(() => { isTransitioning = false; }, 500);
       }
+
+      setTimeout(() => { isTransitioning = false; }, STEP_COOLDOWN);
       return;
     }
     
@@ -208,24 +261,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (Math.abs(diffY) > 35) {
       if (diffY < 0 && window.scrollY <= 80 && activeSectionIndex === 4) {
         isTransitioning = true;
+        lastStepTime = now;
         goToSection(3);
-        setTimeout(() => { isTransitioning = false; }, 500);
+        setTimeout(() => { isTransitioning = false; }, STEP_COOLDOWN);
       } else if (window.scrollY <= 40) {
+        isTransitioning = true;
+        lastStepTime = now;
+
         if (diffY > 0) {
           if (activeSectionIndex < 3) {
-            isTransitioning = true;
             goToSection(activeSectionIndex + 1);
-            setTimeout(() => { isTransitioning = false; }, 500);
           } else if (activeSectionIndex === 3) {
-            isTransitioning = true;
             goToSection(4);
-            setTimeout(() => { isTransitioning = false; }, 500);
           }
         } else if (diffY < 0 && activeSectionIndex > 0) {
-          isTransitioning = true;
           goToSection(activeSectionIndex - 1);
-          setTimeout(() => { isTransitioning = false; }, 500);
         }
+
+        setTimeout(() => { isTransitioning = false; }, STEP_COOLDOWN);
       }
     }
   }, { passive: true });
