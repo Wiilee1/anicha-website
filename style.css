@@ -1280,16 +1280,274 @@ body {
   object-fit: contain;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for Tablets & Mobile Devices */
+@media (max-width: 900px) {
+  .site-header {
+    padding: 16px 24px;
+  }
+  .brand-title {
+    font-size: 20px;
+  }
+  .nav-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  .horizontal-scroll-container {
+    touch-action: pan-y;
+  }
+}
+
 @media (max-width: 768px) {
   .site-header {
-    padding: 16px 20px;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: rgba(8, 8, 10, 0.95);
   }
+  .brand {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .brand-title {
+    font-size: 18px;
+    letter-spacing: 0.18em;
+  }
+  .brand-subtitle {
+    font-size: 9px;
+    margin-top: 0;
+  }
+  /* Mobile Navigation Pill Bar */
   .nav-links {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    gap: 8px;
+    border-radius: 20px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .nav-links::-webkit-scrollbar {
     display: none;
   }
+  .nav-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .header-actions {
+    gap: 8px;
+  }
+  .icon-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  .sound-label {
+    display: none;
+  }
+
+  /* Scroll Sections on Mobile */
   .scroll-section {
-    padding: 100px 24px;
+    padding: 90px 16px 80px 16px;
+    min-width: 100vw;
+    width: 100vw;
+    justify-content: center;
+  }
+  .statement-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  .centered-brand-title {
+    font-size: clamp(40px, 14vw, 76px);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .statement-heading {
+    font-size: clamp(24px, 6.5vw, 42px);
+    line-height: 1.3;
+    margin-top: 10px;
+    margin-bottom: 14px;
+  }
+  .statement-body {
+    font-size: clamp(16px, 4.5vw, 24px);
+    line-height: 1.5;
+  }
+  .statement-sub {
+    font-size: clamp(13px, 3.5vw, 17px);
+  }
+  .statement-tagline {
+    font-size: clamp(15px, 4vw, 22px);
+    margin-top: 16px;
+  }
+
+  /* Odnowa Section Responsive Stack */
+  .vertical-section-stillness {
+    padding: 60px 12px 120px 12px;
+  }
+  .continuous-vertical-scroll {
+    gap: 60px;
+  }
+  .hero-odnowa-card {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
+  .odnowa-title {
+    font-size: clamp(26px, 7vw, 40px);
+  }
+  .odnowa-sub-title {
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .odnowa-lead {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .odnowa-header-row {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .chip {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+  /* Odnowa Vertical List Stacked on Mobile */
+  .odnowa-vertical-list {
+    gap: 12px;
+    margin: 20px 0 24px 0;
+  }
+  .odnowa-list-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+  .odnowa-row-left {
+    min-width: 0;
+    width: 100%;
+  }
+  .odnowa-row-right {
+    text-align: left;
+    width: 100%;
+  }
+  .odnowa-row-right p {
+    font-size: 13px;
+  }
+  .odnowa-cta-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 14px 18px;
+    font-size: 13px;
+  }
+
+  /* 4 Pillars Responsive Display */
+  .sky-title {
+    font-size: clamp(28px, 7vw, 42px);
+  }
+  .sky-subtitle {
+    font-size: 14px;
+  }
+  .pillars-vertical-container {
+    gap: 32px;
+  }
+  .pillar-full-screen-card {
+    min-height: auto;
+    padding: 36px 18px;
+    border-radius: 24px;
+  }
+  .pillar-logo-wrap {
+    width: 110px;
+    height: 110px;
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  .pillar-logo-img, .gaut-logo-img, .siddha-logo-img {
+    max-width: 75px;
+    max-height: 75px;
+  }
+  .pillar-name {
+    font-size: clamp(26px, 7vw, 38px);
+    margin: 6px 0 4px 0;
+  }
+  .pillar-role-title {
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+  .pillar-desc {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Founder Section & Contact Card */
+  .founder-full-card {
+    padding: 28px 18px;
+    border-radius: 24px;
+  }
+  .clean-heading {
+    font-size: clamp(24px, 6vw, 36px);
+  }
+  .clean-text {
+    font-size: 14px;
+    line-height: 1.65;
+    margin-bottom: 24px;
+  }
+  .qualification-box, .contact-box {
+    padding: 20px 16px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+  }
+  .qual-title, .contact-title {
+    font-size: 18px;
+  }
+  .qual-list {
+    gap: 12px;
+  }
+  .qual-list li {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .contact-links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .contact-btn {
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Footer on Mobile */
+  .site-footer {
+    padding: 36px 20px 24px 20px;
+    border-radius: 24px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 32px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  /* Bottom Bar */
+  .bottom-bar {
+    padding: 14px 16px;
+  }
+  .progress-track-wrapper {
+    margin: 0 14px;
+  }
+  .scroll-indicator-text {
+    display: none;
   }
   .cards-grid {
     grid-template-columns: 1fr;

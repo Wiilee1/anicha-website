@@ -165,11 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: false });
 
-  // Touch Swipe Gesture Handler
+  // Touch Swipe Gesture Handler (Supports both Vertical & Horizontal Swipes)
+  let touchStartX = 0;
   let touchStartY = 0;
 
   window.addEventListener('touchstart', (e) => {
     if (e.touches.length > 0) {
+      touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
     }
   }, { passive: true });
@@ -177,9 +179,32 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchend', (e) => {
     if (e.changedTouches.length === 0 || isTransitioning) return;
     
+    const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
+    const diffX = touchStartX - touchEndX;
     const diffY = touchStartY - touchEndY;
+
+    // Check if horizontal swipe is dominant on statement screens
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 35 && window.scrollY <= 60) {
+      if (diffX > 0) { // Swipe Left -> Next Section
+        if (activeSectionIndex < 3) {
+          isTransitioning = true;
+          goToSection(activeSectionIndex + 1);
+          setTimeout(() => { isTransitioning = false; }, 500);
+        } else if (activeSectionIndex === 3) {
+          isTransitioning = true;
+          goToSection(4);
+          setTimeout(() => { isTransitioning = false; }, 500);
+        }
+      } else if (diffX < 0 && activeSectionIndex > 0) { // Swipe Right -> Prev Section
+        isTransitioning = true;
+        goToSection(activeSectionIndex - 1);
+        setTimeout(() => { isTransitioning = false; }, 500);
+      }
+      return;
+    }
     
+    // Vertical swipe handling
     if (Math.abs(diffY) > 35) {
       if (diffY < 0 && window.scrollY <= 80 && activeSectionIndex === 4) {
         isTransitioning = true;
