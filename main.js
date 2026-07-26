@@ -146,15 +146,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // HARD SCROLL LOCK: Prevent window vertical scroll on Screens 01, 02, and 03
+  window.addEventListener('scroll', () => {
+    if (activeSectionIndex < 3 && window.scrollY > 0) {
+      window.scrollTo(0, 0);
+    }
+  });
+
   // Intercept Mouse Wheel / Trackpad Scroll Gesture
   window.addEventListener('wheel', (e) => {
-    // If user is scrolled down in vertical section 5 (scrollY > 50), allow natural page scroll in both directions!
-    if (window.scrollY > 50) {
+    // If activeSectionIndex === 4 (Section 5 Stillness) and scrolled down (scrollY > 40), allow natural vertical scroll
+    if (activeSectionIndex === 4 && window.scrollY > 40 && e.deltaY > 0) {
       return;
     }
 
-    // If user is near top of vertical section 5 (0 < scrollY <= 50) and scrolling UP, return to Screen 4 (Purpose)
-    if (window.scrollY > 5 && window.scrollY <= 50 && e.deltaY < 0) {
+    // If in Section 5 and scrolling UP near section top (0 < scrollY <= 40), return smoothly to Screen 4 (Purpose)
+    if (activeSectionIndex === 4 && window.scrollY > 0 && window.scrollY <= 40 && e.deltaY < 0) {
       e.preventDefault();
       if (!isTransitioning) {
         isTransitioning = true;
@@ -164,9 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // On top of page (window.scrollY <= 5): Screens 01 to 04
-    if (window.scrollY <= 5) {
-      // Unconditionally prevent default vertical window scrolling on horizontal screens!
+    // If on horizontal statement screens (activeSectionIndex <= 3)
+    if (activeSectionIndex <= 3 || window.scrollY <= 10) {
       e.preventDefault();
 
       const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
