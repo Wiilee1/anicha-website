@@ -467,12 +467,12 @@ body {
 }
 
 .blended-odnowa-logo {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: 8px;
   background: transparent;
-  filter: drop-shadow(0 2px 8px rgba(229, 204, 159, 0.4));
+  filter: drop-shadow(0 2px 10px rgba(229, 204, 159, 0.45));
 }
 
 .odnowa-header-row {

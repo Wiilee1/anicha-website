@@ -186,12 +186,12 @@ p {
 }
 
 .nav-odnowa-logo {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
-    border-radius: 6px;
+    border-radius: 8px;
     background: transparent;
-    filter: drop-shadow(0 2px 6px rgba(30, 62, 43, 0.15));
+    filter: drop-shadow(0 2px 6px rgba(30, 62, 43, 0.2));
 }
 
 .logo-icon {
@@ -430,9 +430,21 @@ p {
 
 .family-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
     margin-top: 48px;
+}
+
+@media (max-width: 900px) {
+    .family-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .family-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .family-card {
@@ -648,90 +660,85 @@ p {
 }
 
 /* Pricing Wrapper */
-.pricing-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin-top: 48px;
+.pricing-single-wrapper {
+    max-width: 780px;
+    margin: 40px auto 0;
 }
 
 .price-box {
-    background: var(--color-card-bg);
-    border-radius: var(--radius-lg);
-    padding: 40px;
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 44px 40px;
     border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-subtle);
+    box-shadow: 0 16px 44px rgba(30, 62, 43, 0.08);
     position: relative;
+    border-top: 5px solid var(--color-primary);
 }
 
 .participant-box {
-    border-top: 4px solid var(--color-accent);
-}
-
-.owner-box {
-    background: #173223;
-    color: #FFFFFF;
-    border-top: 4px solid var(--color-gold);
-}
-
-.owner-box h3 {
-    color: #FFFFFF;
-}
-
-.owner-box p {
-    color: rgba(255, 255, 255, 0.8);
+    border-top: 5px solid var(--color-primary);
 }
 
 .price-badge {
     display: inline-block;
-    background: rgba(200, 109, 81, 0.12);
-    color: var(--color-accent);
-    padding: 4px 14px;
+    background: rgba(30, 62, 43, 0.08);
+    color: var(--color-primary);
+    padding: 6px 16px;
     border-radius: 20px;
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 12px;
-}
-
-.owner-badge {
-    background: rgba(212, 163, 115, 0.2);
-    color: var(--color-gold);
 }
 
 .price-amount {
     font-family: var(--font-heading);
-    font-size: 3.2rem;
+    font-size: 3.4rem;
     font-weight: 700;
     color: var(--color-primary);
-    margin: 12px 0;
+    margin: 8px 0 14px;
+    line-height: 1;
 }
 
 .price-amount span {
     font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: 1.05rem;
+    font-weight: 500;
     color: var(--color-text-muted);
 }
 
 .price-features {
     list-style: none;
-    margin-top: 24px;
+    margin-top: 28px;
     border-top: 1px solid var(--color-border);
-    padding-top: 20px;
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
 .price-features li {
-    font-size: 0.95rem;
-    margin-bottom: 10px;
+    font-size: 0.98rem;
+    color: var(--color-text-dark);
+    line-height: 1.5;
     display: flex;
-    gap: 10px;
+    gap: 14px;
     align-items: center;
 }
 
 .price-features span {
-    color: var(--color-accent);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(30, 62, 43, 0.1);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: bold;
+    font-size: 13px;
+    flex-shrink: 0;
 }
 
 .profit-highlight {
