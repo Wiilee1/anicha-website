@@ -555,29 +555,29 @@
                     </div>
                 </div>
 
-                <form class="zapis-form" id="zapisForm">
+                <form class="zapis-form" id="odnowa-signup-form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="zapis-imie">Imię i Nazwisko *</label>
-                            <input type="text" id="zapis-imie" name="firstName" placeholder="np. Anna Kowalska" required
+                            <label for="firstName">Imię i Nazwisko *</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="np. Anna Kowalska" required
                                 autocomplete="name">
                         </div>
                         <div class="form-group">
-                            <label for="zapis-email">Adres Email *</label>
-                            <input type="email" id="zapis-email" name="email" placeholder="np. anna@email.pl" required
+                            <label for="email">Adres Email *</label>
+                            <input type="email" id="email" name="email" placeholder="np. anna@email.pl" required
                                 autocomplete="email">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="zapis-telefon">Numer Telefonu *</label>
-                            <input type="tel" id="zapis-telefon" name="phoneNumber" placeholder="np. +48 600 000 000"
+                            <label for="phoneNumber">Numer Telefonu *</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="np. +48 600 000 000"
                                 required autocomplete="tel">
                         </div>
                         <div class="form-group">
-                            <label for="zapis-skad">Skąd dowiedziałaś/-eś się o nas?</label>
-                            <select id="zapis-skad" name="source">
+                            <label for="source">Skąd dowiedziałaś/-eś się o nas?</label>
+                            <select id="source" name="source">
                                 <option value="Odnowa Website" selected>Wybierz opcję</option>
                                 <option value="Instagram / Facebook">Instagram / Facebook</option>
                                 <option value="Polecenie znajomego">Polecenie znajomego</option>
@@ -588,8 +588,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="zapis-wiadomosc">Wiadomość / Pytania (opcjonalnie)</label>
-                        <textarea id="zapis-wiadomosc" name="message" rows="4"
+                        <label for="notes">Wiadomość / Pytania (opcjonalnie)</label>
+                        <textarea id="notes" name="notes" rows="4"
                             placeholder="Czy masz jakieś pytania, alergie żywieniowe lub specjalne potrzeby? Napisz nam o sobie..."></textarea>
                     </div>
 
@@ -600,7 +600,7 @@
                     </div>
 
                     <div class="form-submit-row">
-                        <button type="submit" class="btn-zapis" id="zapiszBtn">
+                        <button type="submit" class="btn-zapis" id="submitBtn">
                             <span class="btn-text">✉️ Wyślij Zgłoszenie</span>
                             <span class="btn-subtext">Odpiszemy w ciągu 24 godzin</span>
                         </button>
@@ -608,7 +608,7 @@
                             zwrotnym.</p>
                     </div>
 
-                    <div class="form-success" id="formSuccess" style="display:none;">
+                    <div id="form-status" style="display:none;" class="form-success">
                         <div class="success-icon">🌿</div>
                         <h3>Dziękujemy za zgłoszenie!</h3>
                         <p>Odezwiemy się w ciągu 24 godzin z potwierdzeniem i szczegółami rezerwacji. Do zobaczenia w
@@ -629,45 +629,67 @@
 
     <script src="odnowa-app.js"></script>
     <script>
-        document.getElementById('zapisForm').addEventListener('submit', async function(e) {
+        document.getElementById('odnowa-signup-form').addEventListener('submit', async function(e) {
             e.preventDefault();
+
             const form = e.target;
-            const btn = document.getElementById('zapiszBtn');
-            const success = document.getElementById('formSuccess');
+            const submitBtn = document.getElementById('submitBtn');
+            const statusDiv = document.getElementById('form-status');
 
-            btn.disabled = true;
-            btn.querySelector('.btn-text').textContent = '⏳ Wysyłanie...';
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.btn-text').textContent = '⏳ Wysyłanie...';
+            statusDiv.style.display = 'none';
 
-            const formData = new URLSearchParams();
-            formData.append('firstName', document.getElementById('zapis-imie').value);
-            formData.append('email', document.getElementById('zapis-email').value);
-            formData.append('phoneNumber', document.getElementById('zapis-telefon').value);
-            formData.append('whereDidYouLearn', document.getElementById('zapis-skad').value);
-            formData.append('message', document.getElementById('zapis-wiadomosc').value);
-            formData.append('acceptRodo', document.getElementById('zapis-zgoda').checked ? 'true' : 'false');
-            formData.append('userGroup', 'Odnowa Retreat Lead');
+            // 1. Prepare data for Loops (CRM / newsletter)
+            const loopsData = new URLSearchParams();
+            loopsData.append('firstName', document.getElementById('firstName').value);
+            loopsData.append('email', document.getElementById('email').value);
+            loopsData.append('phoneNumber', document.getElementById('phoneNumber').value);
+            loopsData.append('source', document.getElementById('source').value);
+            loopsData.append('notes', document.getElementById('notes').value);
+            loopsData.append('userGroup', 'Odnowa Retreat Lead');
+
+            // 2. Prepare data for Web3Forms (instant email to agrourodaka@gmail.com)
+            const web3FormData = new FormData();
+            web3FormData.append('access_key', 'd6166330-3e63-4bc5-be98-1643a88d5c0a');
+            web3FormData.append('subject', 'Nowe Zgłoszenie: Odnowa Retreat');
+            web3FormData.append('from_name', 'Odnowa Form');
+            web3FormData.append('Name', document.getElementById('firstName').value);
+            web3FormData.append('Email', document.getElementById('email').value);
+            web3FormData.append('Phone', document.getElementById('phoneNumber').value);
+            web3FormData.append('Source', document.getElementById('source').value);
+            web3FormData.append('Message', document.getElementById('notes').value);
 
             try {
-                const response = await fetch('https://app.loops.so/api/newsletter-form/cms3qykxv031i0iyeu1owgxad', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formData.toString()
-                });
+                // Send to both in parallel
+                const [loopsResponse] = await Promise.all([
+                    fetch('https://app.loops.so/api/newsletter-form/cms3qykxv031i0iyeu1owgxad', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: loopsData.toString()
+                    }),
+                    fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        body: web3FormData
+                    })
+                ]);
 
-                const data = await response.json();
+                const loopsResult = await loopsResponse.json();
 
-                if (response.ok && data.success) {
+                if (loopsResponse.ok && loopsResult.success) {
+                    // Hide form, show success
                     Array.from(form.children).forEach(el => {
-                        if (!el.classList.contains('form-success')) el.style.display = 'none';
+                        if (el.id !== 'form-status') el.style.display = 'none';
                     });
-                    success.style.display = 'block';
+                    statusDiv.style.display = 'block';
+                    form.reset();
                 } else {
-                    throw new Error(data.message || 'Wystąpił błąd podczas wysyłania.');
+                    throw new Error(loopsResult.message || 'Wystąpił błąd podczas wysyłania.');
                 }
             } catch (error) {
                 alert(error.message || 'Coś poszło nie tak. Spróbuj ponownie za chwilę.');
-                btn.disabled = false;
-                btn.querySelector('.btn-text').textContent = '✉️ Wyślij Zgłoszenie';
+                submitBtn.disabled = false;
+                submitBtn.querySelector('.btn-text').textContent = '✉️ Wyślij Zgłoszenie';
             }
         });
     </script>
