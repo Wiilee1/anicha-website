@@ -458,6 +458,8 @@ body {
 
 /* 1. Odnowa Hero Retreat Showcase (Top of Section 5 - Distinct Forest Gradient PL Card) */
 .hero-odnowa-card {
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(135deg, rgba(16, 32, 24, 0.88) 0%, rgba(10, 22, 16, 0.94) 100%);
   border: 1.5px solid rgba(100, 180, 130, 0.45);
   border-radius: 28px;
