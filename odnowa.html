@@ -72,8 +72,9 @@
             <nav class="nav-menu" id="navMenu">
                 <a href="#o-koncepcie">O Koncepcie</a>
                 <a href="#atrakcje">Program</a>
-                <a href="#pakiet">Pakiet & Wyżywienie</a>
+                <a href="#pakiet">Pakiet &amp; Wyżywienie</a>
                 <a href="#harmonogram">Harmonogram</a>
+                <a href="#zapis" class="nav-zapis-link">✉️ Zapisz się</a>
             </nav>
 
             <div class="nav-badge">
@@ -495,6 +496,79 @@
         </div>
     </section>
 
+    <!-- Registration Form Section -->
+    <section class="section zapis" id="zapis">
+        <div class="container">
+            <div class="zapis-wrapper">
+                <div class="zapis-header text-center">
+                    <span class="section-subtitle">Tylko 8 miejsc</span>
+                    <h2>Zapisz się na Odnowa Retreat</h2>
+                    <p>Wyślij formularz, a skontaktujemy się z Tobą w ciągu 24h z potwierdzeniem i szczegółami rezerwacji.</p>
+                    <div class="zapis-meta">
+                        <span class="meta-pill">📅 4–6 Września 2026</span>
+                        <span class="meta-pill">📍 Michałkowa, Góry Sowie</span>
+                        <span class="meta-pill">💳 1 200 PLN / osobę</span>
+                    </div>
+                </div>
+
+                <form class="zapis-form" id="zapisForm" onsubmit="handleZapisSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zapis-imie">Imię i Nazwisko *</label>
+                            <input type="text" id="zapis-imie" name="imie" placeholder="np. Anna Kowalska" required autocomplete="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="zapis-email">Adres Email *</label>
+                            <input type="email" id="zapis-email" name="email" placeholder="np. anna@email.pl" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zapis-telefon">Numer Telefonu *</label>
+                            <input type="tel" id="zapis-telefon" name="telefon" placeholder="np. +48 600 000 000" required autocomplete="tel">
+                        </div>
+                        <div class="form-group">
+                            <label for="zapis-skad">Skąd dowiedziałaś/-eś się o nas?</label>
+                            <select id="zapis-skad" name="skad">
+                                <option value="" disabled selected>Wybierz opcję</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="znajomi">Polecenie od znajomych</option>
+                                <option value="wyszukiwarka">Wyszukiwarka (Google)</option>
+                                <option value="inne">Inne</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zapis-wiadomosc">Wiadomość / Pytania (opcjonalnie)</label>
+                        <textarea id="zapis-wiadomosc" name="wiadomosc" rows="4" placeholder="Czy masz jakieś pytania, alergie żywieniowe lub specjalne potrzeby? Napisz nam o sobie..."></textarea>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="zapis-zgoda" name="zgoda" required>
+                        <label for="zapis-zgoda">Wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji zapisu na Odnowa Retreat. *</label>
+                    </div>
+
+                    <div class="form-submit-row">
+                        <button type="submit" class="btn-zapis" id="zapiszBtn">
+                            <span class="btn-text">✉️ Wyślij Zgłoszenie</span>
+                            <span class="btn-subtext">Odpiszemy w ciągu 24 godzin</span>
+                        </button>
+                        <p class="form-note">* Pola obowiązkowe. Brak opłat na tym etapie — rezerwacja po kontakcie zwrotnym.</p>
+                    </div>
+
+                    <div class="form-success" id="formSuccess" style="display:none;">
+                        <div class="success-icon">🌿</div>
+                        <h3>Dziękujemy za zgłoszenie!</h3>
+                        <p>Odezwiemy się w ciągu 24 godzin z potwierdzeniem i szczegółami rezerwacji. Do zobaczenia w Górach Sowich! 🏔️</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container text-center">
@@ -504,5 +578,47 @@
     </footer>
 
     <script src="odnowa-app.js"></script>
+    <script>
+        function handleZapisSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('zapisForm');
+            const btn = document.getElementById('zapiszBtn');
+            const success = document.getElementById('formSuccess');
+
+            // Button loading state
+            btn.disabled = true;
+            btn.querySelector('.btn-text').textContent = '⏳ Wysyłanie...';
+
+            // Collect form data for mailto fallback
+            const imie = document.getElementById('zapis-imie').value;
+            const email = document.getElementById('zapis-email').value;
+            const telefon = document.getElementById('zapis-telefon').value;
+            const skad = document.getElementById('zapis-skad').value || 'Nie podano';
+            const wiadomosc = document.getElementById('zapis-wiadomosc').value || 'Brak';
+
+            const subject = encodeURIComponent('Zgłoszenie na Odnowa Retreat — ' + imie);
+            const body = encodeURIComponent(
+                'Imię i Nazwisko: ' + imie + '\n' +
+                'Email: ' + email + '\n' +
+                'Telefon: ' + telefon + '\n' +
+                'Skąd wie: ' + skad + '\n' +
+                'Wiadomość: ' + wiadomosc
+            );
+
+            // Show success then open mailto
+            setTimeout(() => {
+                // Hide form fields, show success
+                Array.from(form.children).forEach(el => {
+                    if (!el.classList.contains('form-success')) {
+                        el.style.display = 'none';
+                    }
+                });
+                success.style.display = 'block';
+
+                // Open mail client
+                window.location.href = 'mailto:kontakt@anicha.pl?subject=' + subject + '&body=' + body;
+            }, 800);
+        }
+    </script>
 </body>
 </html>
