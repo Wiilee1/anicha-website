@@ -636,42 +636,54 @@
             const btn = document.getElementById('zapiszBtn');
             const success = document.getElementById('formSuccess');
 
+            // Rate limiting (matching Loops' own logic)
+            const now = Date.now();
+            const prev = localStorage.getItem('loops-form-timestamp');
+            if (prev && Number(prev) + 60000 > now) {
+                alert('Zbyt wiele zgłoszeń. Spróbuj ponownie za chwilę.');
+                return;
+            }
+            localStorage.setItem('loops-form-timestamp', now);
+
             // Button loading state
             btn.disabled = true;
             btn.querySelector('.btn-text').textContent = '⏳ Wysyłanie...';
 
-            const imie = document.getElementById('zapis-imie').value;
             const email = document.getElementById('zapis-email').value;
-            const telefon = document.getElementById('zapis-telefon').value;
-            const skad = document.getElementById('zapis-skad').value || 'Nie podano';
-            const wiadomosc = document.getElementById('zapis-wiadomosc').value || 'Brak';
 
-            const params = new URLSearchParams();
-            params.append('email', email);
-            params.append('imie', imie);
-            params.append('telefon', telefon);
-            params.append('skad', skad);
-            params.append('wiadomosc', wiadomosc);
+            // Loops newsletter form only accepts email + userGroup + mailingLists
+            const formBody = 'userGroup=&mailingLists=&email=' + encodeURIComponent(email);
 
             fetch('https://app.loops.so/api/newsletter-form/cms3qykxv031i0iyeu1owgxad', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString()
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formBody
             })
-            .then(res => {
-                Array.from(form.children).forEach(el => {
-                    if (!el.classList.contains('form-success')) {
-                        el.style.display = 'none';
-                    }
-                });
-                success.style.display = 'block';
+            .then(res => [res.ok, res.json()])
+            .then(([ok, dataPromise]) => {
+                if (ok) {
+                    // Show success, hide form fields
+                    Array.from(form.children).forEach(el => {
+                        if (!el.classList.contains('form-success')) {
+                            el.style.display = 'none';
+                        }
+                    });
+                    success.style.display = 'block';
+                } else {
+                    dataPromise.then(data => {
+                        alert(data.message || 'Coś poszło nie tak. Spróbuj ponownie.');
+                        btn.disabled = false;
+                        btn.querySelector('.btn-text').textContent = '✉️ Wyślij Zgłoszenie';
+                        localStorage.setItem('loops-form-timestamp', '');
+                    });
+                }
             })
             .catch(err => {
                 console.error('Fetch error:', err);
-                // Fallback to standard form submit if fetch fails
-                form.submit();
+                alert('Coś poszło nie tak. Spróbuj ponownie.');
+                btn.disabled = false;
+                btn.querySelector('.btn-text').textContent = '✉️ Wyślij Zgłoszenie';
+                localStorage.setItem('loops-form-timestamp', '');
             });
         }
     </script>
