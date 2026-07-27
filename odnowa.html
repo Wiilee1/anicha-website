@@ -19,6 +19,36 @@
             margin: 40px auto 0;
         }
 
+        /* Pakiet Uczestnika — dark forest background */
+        .kosztorys {
+            position: relative;
+            background-image: url('images/las_medytacja.jpg');
+            background-size: cover;
+            background-position: center 40%;
+            background-attachment: fixed;
+        }
+        .kosztorys::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, rgba(14, 28, 20, 0.88) 0%, rgba(20, 40, 28, 0.82) 60%, rgba(10, 20, 14, 0.92) 100%);
+            z-index: 0;
+        }
+        .kosztorys > .container {
+            position: relative;
+            z-index: 1;
+        }
+        .kosztorys .section-subtitle {
+            color: var(--color-gold);
+        }
+        .kosztorys .section-header h2,
+        .kosztorys .section-header p {
+            color: rgba(255, 255, 255, 0.95);
+        }
+        .kosztorys .section-header p {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
         .meal-highlights {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -311,7 +341,7 @@
             </div>
         </div>
     </section>
-    <section class="section kosztorys" id="pakiet">
+    <section class="section kosztorys" id="pakiet" style="padding-bottom: 112px;">
         <div class="container">
             <div class="section-header text-center">
                 <span class="section-subtitle">Wszystko w cenie</span>
