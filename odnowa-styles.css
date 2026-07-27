@@ -180,9 +180,20 @@ p {
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     text-decoration: none;
     flex-shrink: 0;
+}
+
+.nav-odnowa-logo {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-gold);
+    box-shadow: 0 0 12px rgba(212, 163, 115, 0.35);
+    background: #FFFFFF;
+    padding: 2px;
 }
 
 .logo-icon {

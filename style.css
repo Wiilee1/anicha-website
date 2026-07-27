@@ -466,6 +466,17 @@ body {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(80, 160, 110, 0.25);
 }
 
+.blended-odnowa-logo {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-gold);
+  box-shadow: 0 0 20px rgba(229, 204, 159, 0.3);
+  background: rgba(16, 32, 24, 0.9);
+  padding: 2px;
+}
+
 .odnowa-header-row {
   display: flex;
   flex-wrap: wrap;
