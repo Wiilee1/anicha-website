@@ -589,12 +589,12 @@
 
                     <div class="form-group">
                         <label for="zapis-wiadomosc">Wiadomość / Pytania (opcjonalnie)</label>
-                        <textarea id="zapis-wiadomosc" name="notes" rows="4"
+                        <textarea id="zapis-wiadomosc" name="message" rows="4"
                             placeholder="Czy masz jakieś pytania, alergie żywieniowe lub specjalne potrzeby? Napisz nam o sobie..."></textarea>
                     </div>
 
                     <div class="form-group form-check">
-                        <input type="checkbox" id="zapis-zgoda" name="consent" required>
+                        <input type="checkbox" id="zapis-zgoda" name="acceptRodo" required>
                         <label for="zapis-zgoda">Wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji
                             zapisu na Odnowa Retreat. *</label>
                     </div>
@@ -642,8 +642,9 @@
             formData.append('firstName', document.getElementById('zapis-imie').value);
             formData.append('email', document.getElementById('zapis-email').value);
             formData.append('phoneNumber', document.getElementById('zapis-telefon').value);
-            formData.append('source', document.getElementById('zapis-skad').value);
-            formData.append('notes', document.getElementById('zapis-wiadomosc').value);
+            formData.append('whereDidYouLearn', document.getElementById('zapis-skad').value);
+            formData.append('message', document.getElementById('zapis-wiadomosc').value);
+            formData.append('acceptRodo', document.getElementById('zapis-zgoda').checked ? 'true' : 'false');
             formData.append('userGroup', 'Odnowa Retreat Lead');
 
             try {
