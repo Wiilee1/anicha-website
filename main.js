@@ -370,110 +370,109 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       goToSection(activeSectionIndex - 1);
     }
+  });  // ==========================================================================
+  // File-Based Ambient Audio Engine (Real MP3/WAV per section + Whoosh)
+  // ==========================================================================
+
+  // Map each section index to its audio file
+  const sectionTracks = [
+    'tibetan_bowl.mp3', // 0: ANICHA (Silk)
+    'Desert.mp3',                                          // 1: CHANGE (Desert)
+    'Water.mp3',                                           // 2: AWARENESS (Waves)
+    'Storm.mp3',                                           // 3: PURPOSE (Clouds)
+    'Wind.mp3',                                            // 4: STILLNESS + rest
+  ];
+
+  // Pre-create all Audio elements
+  const trackElements = sectionTracks.map(src => {
+    const a = new Audio(src);
+    a.loop = true;
+    a.volume = 0;
+    a.preload = 'auto';
+    return a;
   });
 
-  // ==========================================================================
-  // Web Audio Environment Soundscapes & Organic Swoosh Effects
-  // ==========================================================================
+  const whooshAudio = new Audio('whoosh.mp3');
+  whooshAudio.volume = 0.55;
+  whooshAudio.preload = 'auto';
+
+  let currentTrackIdx = -1;   // which track is currently fading in
+  let fadeRAF = null;          // animation frame handle for fade
+
+  // Smooth fade utility: ramp a track's volume from current → target over `ms`
+  function fadeTrack(audio, targetVol, ms, onDone) {
+    const startVol = audio.volume;
+    const startTime = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - startTime) / ms);
+      audio.volume = startVol + (targetVol - startVol) * t;
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        audio.volume = targetVol;
+        if (onDone) onDone();
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function switchTrack(newIdx) {
+    if (!isAudioPlaying) return;
+    if (newIdx === currentTrackIdx) return;
+
+    const FADE_MS = 1500;
+
+    // Fade out all currently playing tracks
+    trackElements.forEach((trk, i) => {
+      if (i !== newIdx && trk.volume > 0) {
+        fadeTrack(trk, 0, FADE_MS, () => {
+          trk.pause();
+          trk.currentTime = 0;
+        });
+      }
+    });
+
+    // Fade in the new track
+    const incoming = trackElements[newIdx];
+    if (incoming.paused) {
+      incoming.currentTime = 0;
+      incoming.play().catch(() => {});
+    }
+    fadeTrack(incoming, 0.45, FADE_MS);
+    currentTrackIdx = newIdx;
+  }
 
   function playTransitionSwoosh() {
-    if (!audioCtx || !isAudioPlaying) return;
+    if (!isAudioPlaying) return;
     try {
-      const now = audioCtx.currentTime;
-      const bufferSize = audioCtx.sampleRate * 0.45;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const output = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        output[i] = Math.random() * 2 - 1;
-      }
-
-      const noise = audioCtx.createBufferSource();
-      noise.buffer = buffer;
-
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(220, now);
-      filter.frequency.exponentialRampToValueAtTime(1400, now + 0.22);
-      filter.frequency.exponentialRampToValueAtTime(180, now + 0.45);
-      filter.Q.setValueAtTime(3.0, now);
-
-      const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(0.16, now + 0.18);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      noise.start(now);
-      noise.stop(now + 0.45);
-    } catch (e) {
-      console.log('Swoosh sound error:', e);
-    }
+      whooshAudio.currentTime = 0;
+      whooshAudio.play().catch(() => {});
+    } catch (e) {}
   }
 
   function updateEnvironmentSoundscape(sectionIdx) {
-    if (!audioCtx || !isAudioPlaying || !osc1 || !osc2) return;
-    const preset = environmentPresets[sectionIdx] || environmentPresets[0];
-    const now = audioCtx.currentTime;
-
-    osc1.frequency.exponentialRampToValueAtTime(preset.freq1, now + 1.2);
-    osc2.frequency.exponentialRampToValueAtTime(preset.freq2, now + 1.2);
-    if (biquadFilter) {
-      biquadFilter.frequency.exponentialRampToValueAtTime(preset.cutoff, now + 1.2);
-    }
+    switchTrack(Math.min(sectionIdx, trackElements.length - 1));
   }
 
   function toggleAudio() {
     if (!isAudioPlaying) {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-
-      const now = audioCtx.currentTime;
-      const preset = environmentPresets[activeSectionIndex] || environmentPresets[0];
-
-      osc1 = audioCtx.createOscillator();
-      osc2 = audioCtx.createOscillator();
-      biquadFilter = audioCtx.createBiquadFilter();
-      masterGain = audioCtx.createGain();
-
-      osc1.type = preset.type1;
-      osc1.frequency.setValueAtTime(preset.freq1, now);
-
-      osc2.type = preset.type2;
-      osc2.frequency.setValueAtTime(preset.freq2, now);
-
-      biquadFilter.type = 'lowpass';
-      biquadFilter.frequency.setValueAtTime(preset.cutoff, now);
-
-      masterGain.gain.setValueAtTime(0.001, now);
-      masterGain.gain.exponentialRampToValueAtTime(0.10, now + 2.5);
-
-      osc1.connect(biquadFilter);
-      osc2.connect(biquadFilter);
-      biquadFilter.connect(masterGain);
-      masterGain.connect(audioCtx.destination);
-
-      osc1.start(now);
-      osc2.start(now);
-
       isAudioPlaying = true;
+      // Start playing the current section's track
+      switchTrack(Math.max(0, activeSectionIndex));
       if (soundToggleBtn) {
         soundToggleBtn.querySelector('.sound-icon').textContent = '🔊';
         const label = soundToggleBtn.querySelector('.sound-label');
         if (label) label.textContent = currentLang === 'EN' ? 'SOUND ON' : 'DŹWIĘK WŁ.';
       }
     } else {
-      if (masterGain && audioCtx) {
-        masterGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8);
-        setTimeout(() => {
-          osc1?.stop();
-          osc2?.stop();
-          isAudioPlaying = false;
-        }, 800);
-      }
+      // Fade out all tracks and stop
+      trackElements.forEach(trk => {
+        if (trk.volume > 0) {
+          fadeTrack(trk, 0, 800, () => trk.pause());
+        }
+      });
+      currentTrackIdx = -1;
+      isAudioPlaying = false;
       if (soundToggleBtn) {
         soundToggleBtn.querySelector('.sound-icon').textContent = '🔈';
         const label = soundToggleBtn.querySelector('.sound-label');
