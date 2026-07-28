@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sectionTracks = [
     'tibetan_bowl.mp3', // 0: ANICHA (Silk)
     'Desert.mp3',       // 1: CHANGE (Desert)
-    'Water.mp3',        // 2: AWARENESS (Waves)
+    'stream.mp3',      // 2: AWARENESS (Waves)
     'Storm.mp3',        // 3: PURPOSE (Clouds)
     'Wind.mp3',         // 4: STILLNESS + rest
   ];
@@ -392,8 +392,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return a;
   });
 
-  // Separate quiet Water layer that plays under Wind on screen 5
-  const waterLayer = new Audio('Water.mp3');
+  // Separate quiet stream layer that plays under Wind on screen 5
+  const waterLayer = new Audio('stream.mp3');
   waterLayer.loop = true;
   waterLayer.volume = 0;
   waterLayer.preload = 'auto';
