@@ -38,48 +38,49 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "Still Lake", freq1: 136.10, freq2: 272.20, type1: "sine", type2: "triangle", cutoff: 800 }
   ];
 
-  // Preloader Engine: Guaranteed video frame decoding & smooth presence loading
-  const preloader = document.getElementById('site-preloader');
+    // Preloader Engine — waits for all videos, then shows PRESS ENTER gate
+  const preloader      = document.getElementById('site-preloader');
   const preloaderBarFill = document.getElementById('preloader-bar-fill');
-  const preloaderStatus = document.getElementById('preloader-status');
+  const preloaderStatus  = document.getElementById('preloader-status');
+  const preloaderEnter   = document.getElementById('preloader-enter');
 
   const startTime = Date.now();
-  const MIN_PRELOADER_TIME = 1800; // Guarantee 1.8s minimum presentation for smooth user experience
-  let isVideoReady = false;
+  const MIN_PRELOADER_TIME = 1800;
+  let videosReady = 0;
+  let allVideosReady = false;
+  let enterGateShown = false;
+  let enterGatePassed = false;
 
   function setPreloaderProgress(percent) {
     if (preloaderBarFill) preloaderBarFill.style.width = `${percent}%`;
   }
 
-  // Smooth progress bar animation
-  let currentPercent = 15;
-  setPreloaderProgress(15);
-  const progressInterval = setInterval(() => {
-    if (currentPercent < 90) {
-      currentPercent += Math.floor(Math.random() * 14) + 6;
-      setPreloaderProgress(Math.min(90, currentPercent));
+  // Start bar at 5% immediately
+  setPreloaderProgress(5);
+
+  // Each video that becomes ready adds its share of the progress bar
+  const progressPerVideo = 90 / videoElements.length; // 0-90% from videos, final 10% on enter
+
+  function onVideoReady() {
+    videosReady++;
+    const pct = Math.min(90, 5 + videosReady * progressPerVideo);
+    setPreloaderProgress(pct);
+
+    if (videosReady >= videoElements.length && !allVideosReady) {
+      allVideosReady = true;
+      tryShowEnterGate();
     }
-  }, 160);
-
-  function tryDismissPreloader() {
-    const elapsedTime = Date.now() - startTime;
-    const remainingTime = Math.max(0, MIN_PRELOADER_TIME - elapsedTime);
-
-    setTimeout(() => {
-      clearInterval(progressInterval);
-      setPreloaderProgress(100);
-      if (preloaderStatus) preloaderStatus.textContent = 'PRESENCE READY';
-      
-      setTimeout(() => {
-        if (preloader && !preloader.classList.contains('fade-out')) {
-          preloader.classList.add('fade-out');
-          forcePlayAll();
-        }
-      }, 350);
-    }, remainingTime);
   }
 
-  // Verify first video layer playback and frame rendering
+  // Mark a video ready when it has enough data to start playing
+  function watchVideo(v) {
+    if (v.readyState >= 3) { // HAVE_FUTURE_DATA or better
+      onVideoReady();
+      return;
+    }
+    v.addEventListener('canplay', onVideoReady, { once: true });
+  }
+
   function initVideos() {
     videoElements.forEach((v) => {
       v.muted = true;
@@ -88,52 +89,72 @@ document.addEventListener('DOMContentLoaded', () => {
       v.playsInline = true;
       v.setAttribute('muted', '');
       v.setAttribute('playsinline', '');
-
-      const p = v.play();
-      if (p !== undefined) {
-        p.catch(err => console.log('Autoplay deferred until user interaction:', err));
-      }
+      v.play().catch(() => {});
+      watchVideo(v);
     });
-
-    const heroVid = videoElements[0] || document.getElementById('video-1');
-    if (heroVid) {
-      const onHeroPlaying = () => {
-        if (isVideoReady) return;
-        isVideoReady = true;
-        tryDismissPreloader();
-      };
-
-      if (!heroVid.paused && heroVid.readyState >= 2) {
-        onHeroPlaying();
-      } else {
-        heroVid.addEventListener('playing', onHeroPlaying, { once: true });
-        heroVid.addEventListener('loadeddata', onHeroPlaying, { once: true });
-        heroVid.addEventListener('timeupdate', () => {
-          if (heroVid.currentTime > 0.05) {
-            onHeroPlaying();
-          }
-        });
-      }
-    } else {
-      tryDismissPreloader();
-    }
   }
 
-  initVideos();
+  // Show the PRESS ENTER prompt once videos are ready AND min time elapsed
+  function tryShowEnterGate() {
+    if (enterGateShown) return;
+    const elapsed = Date.now() - startTime;
+    const wait = Math.max(0, MIN_PRELOADER_TIME - elapsed);
+    setTimeout(() => {
+      if (enterGateShown) return;
+      enterGateShown = true;
+      setPreloaderProgress(95);
+      if (preloaderStatus) preloaderStatus.textContent = 'PRESENCE READY';
+      if (preloaderEnter) preloaderEnter.classList.add('visible');
 
-  // Safety fallback timeout (3.5s max) to ensure site reveals even on slow networks
+      // Listen for Enter key or click/tap anywhere on the preloader
+      function dismiss(e) {
+        if (enterGatePassed) return;
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        enterGatePassed = true;
+
+        // This IS the user gesture — unlock and start audio right here
+        unlockAllTracks();
+        isAudioPlaying = true;
+        setTimeout(() => switchTrack(activeSectionIndex), 80);
+        if (soundToggleBtn) {
+          soundToggleBtn.querySelector('.sound-icon').textContent = '🔊';
+          const lbl = soundToggleBtn.querySelector('.sound-label');
+          if (lbl) lbl.textContent = currentLang === 'EN' ? 'SOUND ON' : 'DŹWIĘK WŁ.';
+        }
+        // Mark autoStartFired so the window listeners don't fire again
+        autoStartFired = true;
+
+        setPreloaderProgress(100);
+        setTimeout(() => {
+          if (preloader) preloader.classList.add('fade-out');
+          forcePlayAll();
+        }, 200);
+
+        window.removeEventListener('keydown', dismiss);
+        if (preloader) preloader.removeEventListener('click', dismiss);
+        if (preloader) preloader.removeEventListener('touchend', dismiss);
+      }
+
+      window.addEventListener('keydown', dismiss);
+      if (preloader) preloader.addEventListener('click', dismiss);
+      if (preloader) preloader.addEventListener('touchend', dismiss);
+    }, wait);
+  }
+
+  // Hard fallback: if videos take too long, show gate anyway after 6s
   setTimeout(() => {
-    if (!isVideoReady) {
-      tryDismissPreloader();
+    if (!allVideosReady) {
+      allVideosReady = true;
+      tryShowEnterGate();
     }
-  }, 3500);
+  }, 6000);
+
+  initVideos();
 
   // User interaction fallback to guarantee video playback across all browsers
   const forcePlayAll = () => {
     videoElements.forEach(v => {
-      if (v.paused) {
-        v.play().catch(() => {});
-      }
+      if (v.paused) v.play().catch(() => {});
     });
   };
 
