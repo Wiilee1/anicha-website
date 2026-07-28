@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let isTransitioning = false;
   let currentLang = 'EN';
   let audioCtx = null;
-  let isAudioPlaying = false;
+  let isAudioPlaying = true; // Start as ON — audio triggers on first user interaction
   let osc1 = null;
   let osc2 = null;
   let masterGain = null;
@@ -377,10 +377,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Map each section index to its audio file
   const sectionTracks = [
     'tibetan_bowl.mp3', // 0: ANICHA (Silk)
-    'Desert.mp3',                                          // 1: CHANGE (Desert)
-    'Water.mp3',                                           // 2: AWARENESS (Waves)
-    'Storm.mp3',                                           // 3: PURPOSE (Clouds)
-    'Wind.mp3',                                            // 4: STILLNESS + rest
+    'Desert.mp3',       // 1: CHANGE (Desert)
+    'Water.mp3',        // 2: AWARENESS (Waves)
+    'Storm.mp3',        // 3: PURPOSE (Clouds)
+    'Wind.mp3',         // 4: STILLNESS + rest
   ];
 
   // Pre-create all Audio elements
@@ -392,20 +392,26 @@ document.addEventListener('DOMContentLoaded', () => {
     return a;
   });
 
+  // Separate quiet Water layer that plays under Wind on screen 5
+  const waterLayer = new Audio('Water.mp3');
+  waterLayer.loop = true;
+  waterLayer.volume = 0;
+  waterLayer.preload = 'auto';
+
   const whooshAudio = new Audio('whoosh.mp3');
   whooshAudio.volume = 0.55;
   whooshAudio.preload = 'auto';
 
-  let currentTrackIdx = -1;   // which track is currently fading in
-  let fadeRAF = null;          // animation frame handle for fade
+  let currentTrackIdx = -1;
+  let audioUnlocked = false;
 
-  // Smooth fade utility: ramp a track's volume from current → target over `ms`
+  // Smooth volume ramp: from current → targetVol over `ms` milliseconds
   function fadeTrack(audio, targetVol, ms, onDone) {
     const startVol = audio.volume;
     const startTime = performance.now();
-    function step(now) {
-      const t = Math.min(1, (now - startTime) / ms);
-      audio.volume = startVol + (targetVol - startVol) * t;
+    function step(ts) {
+      const t = Math.min(1, (ts - startTime) / ms);
+      audio.volume = Math.max(0, Math.min(1, startVol + (targetVol - startVol) * t));
       if (t < 1) {
         requestAnimationFrame(step);
       } else {
@@ -416,29 +422,52 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(step);
   }
 
+  // Pre-unlock ALL audio elements with a silent play/pause during the user gesture
+  function unlockAllTracks() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
+    const allAudio = [...trackElements, waterLayer, whooshAudio];
+    allAudio.forEach(a => {
+      const p = a.play();
+      if (p) p.then(() => { a.pause(); a.currentTime = 0; }).catch(() => {});
+    });
+  }
+
   function switchTrack(newIdx) {
     if (!isAudioPlaying) return;
     if (newIdx === currentTrackIdx) return;
 
     const FADE_MS = 1500;
 
-    // Fade out all currently playing tracks
+    // Fade out all currently playing tracks (including waterLayer)
     trackElements.forEach((trk, i) => {
       if (i !== newIdx && trk.volume > 0) {
-        fadeTrack(trk, 0, FADE_MS, () => {
-          trk.pause();
-          trk.currentTime = 0;
-        });
+        fadeTrack(trk, 0, FADE_MS, () => { trk.pause(); trk.currentTime = 0; });
       }
     });
 
-    // Fade in the new track
+    // Always fade out the water layer unless we're going to screen 5
+    if (newIdx !== 4 && waterLayer.volume > 0) {
+      fadeTrack(waterLayer, 0, FADE_MS, () => { waterLayer.pause(); waterLayer.currentTime = 0; });
+    }
+
+    // Fade in the main track
     const incoming = trackElements[newIdx];
     if (incoming.paused) {
       incoming.currentTime = 0;
-      incoming.play().catch(() => {});
+      incoming.play().catch(err => console.warn('Audio play failed:', err));
     }
     fadeTrack(incoming, 0.45, FADE_MS);
+
+    // Screen 5: also fade in quiet Water layer underneath Wind
+    if (newIdx === 4) {
+      if (waterLayer.paused) {
+        waterLayer.currentTime = 0;
+        waterLayer.play().catch(err => console.warn('Water layer play failed:', err));
+      }
+      fadeTrack(waterLayer, 0.15, FADE_MS);
+    }
+
     currentTrackIdx = newIdx;
   }
 
@@ -456,17 +485,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function toggleAudio() {
     if (!isAudioPlaying) {
+      // Unlock ALL tracks now while we have the user gesture
+      unlockAllTracks();
       isAudioPlaying = true;
-      // Start playing the current section's track
-      switchTrack(Math.max(0, activeSectionIndex));
+      // Small delay so the unlock play/pause completes first
+      setTimeout(() => {
+        switchTrack(Math.max(0, activeSectionIndex));
+      }, 80);
       if (soundToggleBtn) {
         soundToggleBtn.querySelector('.sound-icon').textContent = '🔊';
         const label = soundToggleBtn.querySelector('.sound-label');
         if (label) label.textContent = currentLang === 'EN' ? 'SOUND ON' : 'DŹWIĘK WŁ.';
       }
     } else {
-      // Fade out all tracks and stop
-      trackElements.forEach(trk => {
+      // Fade out everything and stop
+      [...trackElements, waterLayer].forEach(trk => {
         if (trk.volume > 0) {
           fadeTrack(trk, 0, 800, () => trk.pause());
         }
@@ -479,6 +512,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (label) label.textContent = currentLang === 'EN' ? 'AMBIENT SOUND' : 'DŹWIĘK OTOCZENIA';
       }
     }
+  }
+
+  // Auto-start: fire audio on the very first user interaction
+  // (browsers require a gesture before any audio can play)
+  let autoStartFired = false;
+  function autoStartAudio() {
+    if (autoStartFired) return;
+    autoStartFired = true;
+    unlockAllTracks();
+    setTimeout(() => switchTrack(activeSectionIndex), 80);
+    // Remove listeners once fired
+    ['click','keydown','touchstart','wheel'].forEach(evt =>
+      window.removeEventListener(evt, autoStartAudio)
+    );
+  }
+  ['click','keydown','touchstart','wheel'].forEach(evt =>
+    window.addEventListener(evt, autoStartAudio, { once: true, passive: true })
+  );
+
+  // Show button as ON by default
+  if (soundToggleBtn) {
+    soundToggleBtn.querySelector('.sound-icon').textContent = '🔊';
+    const label = soundToggleBtn.querySelector('.sound-label');
+    if (label) label.textContent = 'SOUND ON';
   }
 
   if (soundToggleBtn) {
