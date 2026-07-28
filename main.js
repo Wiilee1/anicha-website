@@ -465,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
         waterLayer.currentTime = 0;
         waterLayer.play().catch(err => console.warn('Water layer play failed:', err));
       }
-      fadeTrack(waterLayer, 0.15, FADE_MS);
+      fadeTrack(waterLayer, 0.06, FADE_MS);
     }
 
     currentTrackIdx = newIdx;
@@ -515,20 +515,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Auto-start: fire audio on the very first user interaction
-  // (browsers require a gesture before any audio can play)
+  // Skip if the event came from the sound toggle button itself (that's handled by toggleAudio)
   let autoStartFired = false;
-  function autoStartAudio() {
+  function autoStartAudio(e) {
     if (autoStartFired) return;
+    if (soundToggleBtn && soundToggleBtn.contains(e.target)) return;
     autoStartFired = true;
     unlockAllTracks();
+    isAudioPlaying = true;
     setTimeout(() => switchTrack(activeSectionIndex), 80);
-    // Remove listeners once fired
-    ['click','keydown','touchstart','wheel'].forEach(evt =>
-      window.removeEventListener(evt, autoStartAudio)
-    );
+    // Update button UI to reflect ON state
+    if (soundToggleBtn) {
+      soundToggleBtn.querySelector('.sound-icon').textContent = '🔊';
+      const label = soundToggleBtn.querySelector('.sound-label');
+      if (label) label.textContent = currentLang === 'EN' ? 'SOUND ON' : 'DŹWIĘK WŁ.';
+    }
   }
-  ['click','keydown','touchstart','wheel'].forEach(evt =>
-    window.addEventListener(evt, autoStartAudio, { once: true, passive: true })
+  ['wheel', 'keydown', 'touchstart', 'click'].forEach(evt =>
+    window.addEventListener(evt, autoStartAudio, { passive: true })
   );
 
   // Show button as ON by default
