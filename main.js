@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sectionTracks = [
     'tibetan_bowl.mp3', // 0: ANICHA (Silk)
     'Desert.mp3',       // 1: CHANGE (Desert)
-    'stream.mp3',      // 2: AWARENESS (Waves)
+    'Water.mp3',       // 2: AWARENESS (Waves — ocean/water sound)
     'Storm.mp3',        // 3: PURPOSE (Clouds)
     'Wind.mp3',         // 4: STILLNESS + rest
   ];
@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
         waterLayer.currentTime = 0;
         waterLayer.play().catch(err => console.warn('Water layer play failed:', err));
       }
-      fadeTrack(waterLayer, 0.06, FADE_MS);
+      fadeTrack(waterLayer, 0.03, FADE_MS);
     }
 
     currentTrackIdx = newIdx;
