@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
         waterLayer.currentTime = 0;
         waterLayer.play().catch(err => console.warn('Water layer play failed:', err));
       }
-      fadeTrack(waterLayer, 0.03, FADE_MS);
+      fadeTrack(waterLayer, 0.005, FADE_MS);
     }
 
     currentTrackIdx = newIdx;
